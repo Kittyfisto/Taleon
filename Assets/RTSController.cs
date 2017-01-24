@@ -69,7 +69,7 @@ public class RTSController : MonoBehaviour {
 			_verticalAngle = Mathf.Clamp(_verticalAngle, MinimumYAngle, MaximumYAngle);
 
 
-			Debug.LogFormat("Moving camera: x={0}, y={1}", _horizontalAngle, _verticalAngle);
+			//Debug.LogFormat("Moving camera: x={0}, y={1}", _horizontalAngle, _verticalAngle);
 		}
 		_lastPosition = currentPosition;
 	}
@@ -82,7 +82,7 @@ public class RTSController : MonoBehaviour {
 			Mathf.Sin(_verticalAngle) * Mathf.Sin(_horizontalAngle)
 			);
 
-		Debug.LogFormat("Camera: direction={0}, radius={1}", direction, _distance);
+		//Debug.LogFormat("Camera: direction={0}, radius={1}", direction, _distance);
 		
 		transform.localPosition = _distance*direction;
 		transform.LookAt(_target.position);
