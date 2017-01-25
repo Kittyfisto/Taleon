@@ -17,6 +17,7 @@ public class ProjectileComponent : MonoBehaviour
 	public void Shoot(Vector3 position, Vector3 direction)
 	{
 		var body = GetComponent<Rigidbody>();
+		transform.position = position;
 		body.MovePosition(position);
 		body.velocity = velocity * direction;
 	}
