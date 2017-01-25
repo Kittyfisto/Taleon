@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets;
+using UnityEngine;
 
 [RequireComponent(typeof(Outline))]
 public class SelectComponent : MonoBehaviour
@@ -19,6 +20,17 @@ public class SelectComponent : MonoBehaviour
 				return;
 
 			_isSelected = value;
+			if (_isSelected)
+			{
+				var objects = FindObjectsOfType<SelectComponent>();
+				foreach (var component in objects)
+				{
+					if (!ReferenceEquals(this, component))
+					{
+						component.isSelected = false;
+					}
+				}
+			}
 			UpdateOutline();
 		}
 	}
@@ -36,6 +48,14 @@ public class SelectComponent : MonoBehaviour
 		UpdateOutline();
 	}
 
+	private void OnMouseOver()
+	{
+		if (Input.GetMouseButtonUp(MouseButtons.Left))
+		{
+			isSelected = true;
+		}
+	}
+
 	private void OnMouseExit()
 	{
 		_isHovering = false;
@@ -48,13 +68,5 @@ public class SelectComponent : MonoBehaviour
 			_outline.Enable();
 		else
 			_outline.Disable();
-	}
-
-	private void Update()
-	{
-		if (Input.GetMouseButtonUp(0))
-		{
-			isSelected = true;
-		}
 	}
 }

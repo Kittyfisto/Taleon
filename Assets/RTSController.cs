@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets;
 using UnityEngine;
 
 public class RTSController : MonoBehaviour {
@@ -57,9 +58,8 @@ public class RTSController : MonoBehaviour {
 		const float speed = Mathf.Deg2Rad*0.3f;
 
 		var currentPosition = Input.mousePosition;
-		if (Input.GetMouseButton(1))
+		if (Input.GetMouseButton(MouseButtons.Left))
 		{
-
 			var mouseDelta = currentPosition - _lastPosition;
 			var deltaH = mouseDelta.x * speed;
 			_horizontalAngle -= deltaH;

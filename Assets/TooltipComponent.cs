@@ -6,6 +6,8 @@ public class TooltipComponent : MonoBehaviour
 {
 	private readonly Timer _timer;
 
+	public string tooltipText;
+
 	public TooltipComponent()
 	{
 		_timer = new Timer
@@ -18,7 +20,7 @@ public class TooltipComponent : MonoBehaviour
 
 	private void TimerOnElapsed()
 	{
-		Tooltip.Show(gameObject);
+		Tooltip.Show(this);
 	}
 
 	private void OnMouseEnter()

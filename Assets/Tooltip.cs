@@ -4,11 +4,11 @@ using UnityEngine.UI;
 public class Tooltip : MonoBehaviour
 {
 	private Text _text;
-	private GameObject _target;
+	private TooltipComponent _target;
 	private static Tooltip _instance;
 	private RectTransform _transform;
 
-	public static void Show(GameObject target)
+	public static void Show(TooltipComponent target)
 	{
 		if (_instance != null)
 		{
@@ -41,6 +41,6 @@ public class Tooltip : MonoBehaviour
 		transform.position = new Vector3(position.x, position.y) +
 		                     new Vector3(_transform.rect.width, -_transform.rect.height);
 		if (_target != null)
-			_text.text = _target.name;
+			_text.text = _target.tooltipText;
 	}
 }
