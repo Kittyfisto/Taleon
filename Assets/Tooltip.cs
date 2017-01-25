@@ -38,10 +38,9 @@ public class Tooltip : MonoBehaviour
 	private void Update()
 	{
 		var position = Input.mousePosition;
-		if (_target != null)
-			_text.text = _target.name;
-
 		transform.position = new Vector3(position.x, position.y) +
 		                     new Vector3(_transform.rect.width, -_transform.rect.height);
+		if (_target != null)
+			_text.text = _target.name;
 	}
 }

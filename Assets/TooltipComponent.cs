@@ -1,24 +1,40 @@
-﻿using UnityEngine;
+﻿using System;
+using Assets;
+using UnityEngine;
 
-public class TooltipComponent : MonoBehaviour {
+public class TooltipComponent : MonoBehaviour
+{
+	private readonly Timer _timer;
 
-	// Use this for initialization
-	void Start () {
-		
+	public TooltipComponent()
+	{
+		_timer = new Timer
+		{
+			OneShot = true,
+			Interval = TimeSpan.FromMilliseconds(500)
+		};
+		_timer.Elapsed += TimerOnElapsed;
 	}
 
-	void OnMouseEnter()
+	private void TimerOnElapsed()
 	{
 		Tooltip.Show(gameObject);
 	}
 
-	void OnMouseExit()
+	private void OnMouseEnter()
 	{
+		_timer.Start();
+	}
+
+	private void OnMouseExit()
+	{
+		_timer.Stop();
 		Tooltip.Hide();
 	}
 
 	// Update is called once per frame
-	void Update () {
-		
+	private void Update()
+	{
+		_timer.Update();
 	}
 }
