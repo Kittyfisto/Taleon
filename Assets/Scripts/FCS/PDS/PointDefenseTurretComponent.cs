@@ -20,6 +20,7 @@ public class PointDefenseTurretComponent : MonoBehaviour
 	public GameObject target;
 
 	public float roundsPerMinute;
+	private Transform _spawn;
 
 	public PointDefenseTurretComponent()
 	{
@@ -64,6 +65,7 @@ public class PointDefenseTurretComponent : MonoBehaviour
 	{
 		_prefab = Resources.Load("pds_projectile") as GameObject;
 		_audioSource = GetComponent<AudioSource>();
+		_spawn = transform.Find("pds_gun/projectile_spawn");
 	}
 
 	// Update is called once per frame
@@ -86,8 +88,9 @@ public class PointDefenseTurretComponent : MonoBehaviour
 		var body = Instantiate(_prefab);
 		var projectile = body.GetComponent<ProjectileComponent>();
 		var direction = (targetPosition - transform.position).normalized;
+		var spawnPosition = _spawn.position;
 
-		projectile.Shoot(transform.position, direction);
+		projectile.Shoot(spawnPosition, direction);
 
 		_lastShot = Time.time;
 	}
