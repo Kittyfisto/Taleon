@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.FCS
+namespace Assets.Scripts.AI.FCS
 {
 	/// <summary>
 	///     Responsible for instantiating and shooting a projectile at its current location.

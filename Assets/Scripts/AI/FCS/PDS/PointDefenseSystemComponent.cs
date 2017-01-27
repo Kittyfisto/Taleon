@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.FCS.PDS
+namespace Assets.Scripts.AI.FCS.PDS
 {
 	/// <summary>
 	/// The point defense system (PDS) is responsible for prioritizing targets based on the threat they pose on the ship

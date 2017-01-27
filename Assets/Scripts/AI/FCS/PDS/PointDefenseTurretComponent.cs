@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.FCS.PDS
+namespace Assets.Scripts.AI.FCS.PDS
 {
 	/// <summary>
 	/// This component is responsible for controlling a single point defense turret.
@@ -8,12 +8,12 @@ namespace Assets.Scripts.FCS.PDS
 	/// whenever ready.
 	/// </summary>
 	[RequireComponent(typeof(AudioSource))]
-	public class PointDefenseTurretComponent : MonoBehaviour
+	public class PointDefenseTurretComponent
+		: AbstractGunPlatform
 	{
 		private AudioSource _audioSource;
 		private bool _isShooting;
-		private float _lastShot;
-		private GameObject _prefab;
+		private GameObject _projectile;
 
 		/// <summary>
 		/// The target of this turret.
@@ -21,29 +21,11 @@ namespace Assets.Scripts.FCS.PDS
 		/// </summary>
 		public GameObject target;
 
-		public float roundsPerMinute;
 		private ProjectileSpawnComponent _spawn;
 
 		public PointDefenseTurretComponent()
 		{
 			roundsPerMinute = 60;
-		}
-
-		private float RoundWaitInterval
-		{
-			get { return 60 / roundsPerMinute; }
-		}
-
-		private bool CanShoot
-		{
-			get
-			{
-				var delta = Time.time - _lastShot;
-				if (delta >= RoundWaitInterval)
-					return true;
-
-				return false;
-			}
 		}
 
 		public bool IsShooting
@@ -65,14 +47,16 @@ namespace Assets.Scripts.FCS.PDS
 		// Use this for initialization
 		private void Start()
 		{
-			_prefab = Resources.Load("pds_projectile") as GameObject;
+			_projectile = Resources.Load("pds_projectile") as GameObject;
 			_audioSource = GetComponent<AudioSource>();
 			_spawn = GetComponentInChildren<ProjectileSpawnComponent>();
 		}
 
 		// Update is called once per frame
-		private void Update()
+		protected override void Update()
 		{
+			base.Update();
+
 			if (target != null)
 			{
 				IsShooting = true;
@@ -89,9 +73,8 @@ namespace Assets.Scripts.FCS.PDS
 		{
 			var direction = (targetPosition - transform.position).normalized;
 
-			_spawn.Spawn(_prefab, direction);
-
-			_lastShot = Time.time;
+			_spawn.Spawn(_projectile, direction);
+			OnShot();
 		}
 	}
 }

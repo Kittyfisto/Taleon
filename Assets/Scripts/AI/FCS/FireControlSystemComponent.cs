@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.FCS.PDS;
+﻿using Assets.Scripts.AI.FCS.PDS;
 using UnityEngine;
 
-namespace Assets.Scripts.FCS
+namespace Assets.Scripts.AI.FCS
 {
 	/// <summary>
 	/// The fire control system is aware of all hostile targets that have been reported by the sensors.

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.FCS
+namespace Assets.Scripts.AI.FCS
 {
 	[RequireComponent(typeof(Rigidbody))]
 	public class ProjectileComponent : MonoBehaviour

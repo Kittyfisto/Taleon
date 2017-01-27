@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.FCS;
+﻿using Assets.Scripts.AI.FCS;
 using Assets.Scripts.UI;
 using UnityEngine;
 
