@@ -9,6 +9,11 @@ namespace Assets.Scripts.AI.FCS
 		private float _lifeTime;
 
 		/// <summary>
+		/// 
+		/// </summary>
+		public GameObject ExplosionPrefab;
+
+		/// <summary>
 		///     The acceleration of this rocket in units per s².
 		/// </summary>
 		public float Acceleration;
@@ -40,6 +45,7 @@ namespace Assets.Scripts.AI.FCS
 		private bool _isActivated;
 		private Collider _collider;
 		private GameObject _engine;
+		private float _lastDistance;
 
 		// Use this for initialization
 		private void Start()
@@ -50,6 +56,7 @@ namespace Assets.Scripts.AI.FCS
 			_engine = transform.FindChild("Engine").gameObject;
 			
 			_body.velocity = transform.forward * InitialVelocity;
+			_lastDistance = Vector3.Distance(transform.position, target.transform.position);
 		}
 
 		// Update is called once per frame
@@ -62,17 +69,27 @@ namespace Assets.Scripts.AI.FCS
 				ActivateEngine();
 			}
 
-			var direction = CalculateDirectionToTarget();
-			if (_isActivated && _lifeTime < Burntime && target != null)
+			var direction = CalculateEngineDirection();
+			if (_isActivated)
 			{
-				BurnEngine(direction);
-			}
-			else
-			{
-				StopEngine();
+				if (_lifeTime < Burntime && target != null)
+				{
+					BurnEngine(direction);
+				}
+				else
+				{
+					StopEngine();
+				}
+
+				var distance = Vector3.Distance(transform.position, target.transform.position);
+				if (distance > _lastDistance)
+				{
+					Explode();
+				}
+				_lastDistance = distance;
 			}
 
-			transform.LookAt(transform.position + direction);
+			transform.LookAt(transform.position + _body.velocity.normalized);
 
 			if (_lifeTime >= Lifetime)
 				Destroy(gameObject);
@@ -101,10 +118,29 @@ namespace Assets.Scripts.AI.FCS
 			if (target == null)
 				return Vector3.zero;
 
-			// TODO: Find projected position of target based on its current acceleration
 			var delta = target.transform.position - transform.position;
 			var direction = delta.normalized;
 			return direction;
+		}
+
+		private Vector3 CalculateEngineDirection()
+		{
+			if (target == null)
+				return Vector3.zero;
+
+			// TODO: Find projected position of target based on its current acceleration
+			var delta = target.transform.position - transform.position;
+			var direction = delta.normalized;
+
+			// When the movement direction of this rocket does not align with the direction to the target,
+			// then our rocket would naturally overshoot. Therefore we deliberately change the direction we point
+			// our engine at.
+			var movementDirection = _body.velocity.normalized;
+			var up = Vector3.Cross(direction, movementDirection);
+			var planeNormal = Vector3.Cross(up, direction);
+			var desiredDirection = Vector3.ProjectOnPlane(movementDirection, planeNormal);
+
+			return desiredDirection;
 		}
 
 		private void OnTriggerEnter(Collider other)
@@ -114,6 +150,9 @@ namespace Assets.Scripts.AI.FCS
 
 		private void Explode()
 		{
+			var explosion = Instantiate(ExplosionPrefab);
+			explosion.transform.position = transform.position;
+
 			Destroy(gameObject);
 		}
 	}
