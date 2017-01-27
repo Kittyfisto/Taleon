@@ -44,6 +44,7 @@ namespace Assets.Scripts.AI.FCS
 		{
 			var go = Instantiate(rocketPrefab);
 			go.transform.position = transform.position;
+			go.transform.forward = transform.forward;
 			var rocket = go.GetComponent<RocketComponent>();
 			rocket.target = target;
 			OnShot();

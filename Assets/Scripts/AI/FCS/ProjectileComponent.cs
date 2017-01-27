@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.AI.FCS
 {
-	[RequireComponent(typeof(Rigidbody))]
+	[RequireComponent(typeof(Collider))]
 	public class ProjectileComponent : MonoBehaviour
 	{
 		private float _currentLifetime;
@@ -28,8 +28,19 @@ namespace Assets.Scripts.AI.FCS
 		private void Update()
 		{
 			_currentLifetime += Time.deltaTime;
+
 			if (_currentLifetime >= _lifetime)
 				Destroy(gameObject);
+		}
+
+		private void OnTriggerEnter(Collider other)
+		{
+			Explode(other.gameObject);
+		}
+
+		private void Explode(GameObject otherGameObject)
+		{
+			Destroy(gameObject);
 		}
 	}
 }

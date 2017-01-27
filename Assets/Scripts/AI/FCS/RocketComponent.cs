@@ -39,6 +39,7 @@ namespace Assets.Scripts.AI.FCS
 		public GameObject target;
 		private bool _isActivated;
 		private Collider _collider;
+		private GameObject _engine;
 
 		// Use this for initialization
 		private void Start()
@@ -46,9 +47,9 @@ namespace Assets.Scripts.AI.FCS
 			_body = GetComponent<Rigidbody>();
 			_collider = GetComponent<Collider>();
 			_collider.enabled = false;
-
-			var direction = CalculateDirectionToTarget();
-			_body.velocity = direction * InitialVelocity;
+			_engine = transform.FindChild("Engine").gameObject;
+			
+			_body.velocity = transform.forward * InitialVelocity;
 		}
 
 		// Update is called once per frame
@@ -66,6 +67,10 @@ namespace Assets.Scripts.AI.FCS
 			{
 				BurnEngine(direction);
 			}
+			else
+			{
+				StopEngine();
+			}
 
 			transform.LookAt(transform.position + direction);
 
@@ -73,9 +78,15 @@ namespace Assets.Scripts.AI.FCS
 				Destroy(gameObject);
 		}
 
+		private void StopEngine()
+		{
+			_engine.SetActive(false);
+		}
+
 		private void ActivateEngine()
 		{
 			_isActivated = true;
+			_engine.SetActive(true);
 			_collider.enabled = true;
 		}
 
