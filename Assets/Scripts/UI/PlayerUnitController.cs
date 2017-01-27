@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.AI;
 using UnityEngine;
 
 namespace Assets.Scripts.UI
@@ -97,8 +98,8 @@ namespace Assets.Scripts.UI
 			var worldPosition = MouseWorldPosition;
 			if (worldPosition != null)
 			{
-				var controller = selectable.GetComponent<UnitMovementController>();
-				controller.Target = worldPosition.Value;
+				var controller = selectable.GetComponent<ShipSystemComponent>();
+				controller.MovementTarget = worldPosition.Value;
 			}
 			EndMovement();
 		}
