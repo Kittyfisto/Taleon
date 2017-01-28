@@ -21,7 +21,7 @@ namespace Assets.Scripts.AI.FCS
 		/// <summary>
 		///     The acceleration of this rocket in units per s².
 		/// </summary>
-		public float Acceleration;
+		public float MaximumAcceleration;
 
 		/// <summary>
 		///     The amount of time it takes after launch until the rocket is activated.
@@ -75,7 +75,8 @@ namespace Assets.Scripts.AI.FCS
 			}
 
 			Vector3 targetDirection;
-			var direction = CalculateEngineDirection(out targetDirection);
+			float acceleration;
+			var direction = CalculateEngineSolution(out targetDirection, out acceleration);
 			if (_isActivated)
 			{
 				if (_lifeTime < Burntime && target != null)
@@ -119,25 +120,16 @@ namespace Assets.Scripts.AI.FCS
 
 		private void BurnEngine(Vector3 direction)
 		{
-			var force = _body.mass * Acceleration;
+			var force = _body.mass * MaximumAcceleration;
 			_body.AddForce(direction * force);
 		}
 
-		private Vector3 CalculateDirectionToTarget()
-		{
-			if (target == null)
-				return Vector3.zero;
-
-			var delta = target.transform.position - transform.position;
-			var direction = delta.normalized;
-			return direction;
-		}
-
-		private Vector3 CalculateEngineDirection(out Vector3 targetDirection)
+		private Vector3 CalculateEngineSolution(out Vector3 targetDirection, out float acceleration)
 		{
 			if (target == null)
 			{
 				targetDirection = Vector3.zero;
+				acceleration = 0;
 				return Vector3.zero;
 			}
 
@@ -164,11 +156,26 @@ namespace Assets.Scripts.AI.FCS
 				// (The greater this angle, the more sharp turns the rocket can perform).
 				var forward = transform.forward;
 				var angle = Vector3.Angle(idealAccelerationDirection, forward);
-				var maximumAngle = Mathf.Clamp(angle, 0, MaximumNozzleGimbalAngle);
-				accelerationDirection = Vector3.RotateTowards(forward, idealAccelerationDirection, maximumAngle*Mathf.Deg2Rad, 1);
+
+				if (angle > MaximumNozzleGimbalAngle)
+				{
+					var maximumAngle = Mathf.Clamp(angle, 0, MaximumNozzleGimbalAngle);
+					accelerationDirection = Vector3.RotateTowards(forward, idealAccelerationDirection, maximumAngle * Mathf.Deg2Rad, 1);
+
+					// we cannot accelerate with full thrust when we're pointed at the wrong direction
+					// and therefore we turn with a very limited amount f acceleration until
+					// we're roughly pointed in the right direction...
+					acceleration = 0.1f * MaximumAcceleration;
+				}
+				else
+				{
+					accelerationDirection = idealAccelerationDirection;
+					acceleration = MaximumAcceleration;
+				}
 			}
 			else
 			{
+				acceleration = MaximumAcceleration;
 				accelerationDirection = movementDirection;
 			}
 
