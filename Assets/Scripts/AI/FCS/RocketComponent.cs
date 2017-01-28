@@ -46,6 +46,11 @@ namespace Assets.Scripts.AI.FCS
 		/// </remarks>
 		public float Lifetime;
 
+		public float CurrentAcceleration
+		{
+			get { return _currentAcceleration; }
+		}
+
 		public bool IsActivated
 		{
 			get { return _isActivated; }
@@ -56,6 +61,7 @@ namespace Assets.Scripts.AI.FCS
 		private Collider _collider;
 		private GameObject _engine;
 		private float _lastDistance;
+		private float _currentAcceleration;
 
 		// Use this for initialization
 		private void Start()
@@ -114,6 +120,7 @@ namespace Assets.Scripts.AI.FCS
 		private void StopEngine()
 		{
 			_engine.SetActive(false);
+			_currentAcceleration = 0;
 		}
 
 		private void ActivateEngine()
@@ -125,7 +132,8 @@ namespace Assets.Scripts.AI.FCS
 
 		private void BurnEngine(Vector3 direction)
 		{
-			var force = _body.mass * MaximumAcceleration;
+			_currentAcceleration = MaximumAcceleration;
+			var force = _body.mass * _currentAcceleration;
 			_body.AddForce(direction * force);
 		}
 

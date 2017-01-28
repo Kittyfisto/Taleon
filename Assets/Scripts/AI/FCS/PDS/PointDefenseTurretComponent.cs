@@ -72,6 +72,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 				}
 				else
 				{
+					IsShooting = false;
 					Target = null;
 				}
 
@@ -89,20 +90,25 @@ namespace Assets.Scripts.AI.FCS.PDS
 		/// <returns></returns>
 		private FiringSolution? FindSolution(GameObject target)
 		{
+			var projectile = ProjectilePrefab.GetComponent<ProjectileComponent>();
 			var rocket = target.GetComponent<RocketComponent>();
 			var body = target.GetComponent<Rigidbody>();
 
 			var targetPosition = target.transform.position;
 			var targetVelocity = body.velocity;
-			var targetAcceleration = rocket.MaximumAcceleration;
+			var targetAcceleration = rocket.CurrentAcceleration;
 
 			var position = _spawn.transform.position;
-			var velocity = ProjectilePrefab.GetComponent<ProjectileComponent>().velocity;
+			var velocity = projectile.velocity;
+			var range = projectile.range;
 
-			return TrySolve(position, velocity, targetPosition, targetVelocity, targetAcceleration);
+			return TrySolve(position, velocity, range, targetPosition, targetVelocity, targetAcceleration);
 		}
 
-		private static FiringSolution? TrySolve(Vector3 projectilePosition, float projectileVelocity, Vector3 targetPosition,
+		private static FiringSolution? TrySolve(Vector3 projectilePosition,
+			float projectileVelocity,
+			float projectileRange,
+			Vector3 targetPosition,
 			Vector3 targetVelocity, float targetAcceleration)
 		{
 			// We need to solve "v1*t = a2*t + v2*t"
@@ -126,7 +132,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 				var finalDistance = firingDirection.magnitude;
 				var finalFlyingTime = finalDistance / projectileVelocity;
 
-				if (IsProperSolution(finalDistance))
+				if (IsProperSolution(finalDistance, projectileRange))
 				{
 					solution = new FiringSolution
 					{
@@ -142,11 +148,21 @@ namespace Assets.Scripts.AI.FCS.PDS
 			return solution;
 		}
 
-		private static bool IsProperSolution(float finalDistance)
+		private static bool IsProperSolution(float finalDistance, float maximumRange)
 		{
-			return finalDistance > 0 &&
-			       !float.IsNaN(finalDistance) &&
-			       !float.IsInfinity(finalDistance);
+			if (finalDistance > maximumRange)
+				return false;
+
+			if (finalDistance <= 0)
+				return false;
+
+			if (float.IsNaN(finalDistance))
+				return false;
+
+			if (float.IsInfinity(finalDistance))
+				return false;
+
+			return true;
 		}
 
 		private void ShootProjectile(FiringSolution solution)
