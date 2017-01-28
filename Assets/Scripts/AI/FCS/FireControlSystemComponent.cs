@@ -39,7 +39,8 @@ namespace Assets.Scripts.AI.FCS
 
 		private bool TargetsUs(RocketComponent rocket)
 		{
-			return rocket.target == gameObject;
+			return rocket.IsActivated &&
+			       rocket.target == gameObject;
 		}
 	}
 }

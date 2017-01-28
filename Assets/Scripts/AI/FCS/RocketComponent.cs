@@ -46,6 +46,11 @@ namespace Assets.Scripts.AI.FCS
 		/// </remarks>
 		public float Lifetime;
 
+		public bool IsActivated
+		{
+			get { return _isActivated; }
+		}
+
 		public GameObject target;
 		private bool _isActivated;
 		private Collider _collider;

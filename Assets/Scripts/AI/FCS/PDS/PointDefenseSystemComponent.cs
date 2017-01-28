@@ -27,6 +27,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 		public void SetTargets(IEnumerable<GameObject> targets)
 		{
 			_targets.Clear();
+			// TODO: Prioritize targets based on the threat they pose to us
 			_targets.AddRange(targets);
 		}
 
@@ -59,13 +60,24 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 		private void AssignTarget(GameObject target)
 		{
-			// Not only should we try to use a turret that can fire at the target, but
-			// we should also chose a turret that can fire the soonest.
-			var availableTurrets = _turrets.Where(x => x.target == null);
-			var bestTurret = availableTurrets.Aggregate((i1, i2) => i1.TimeToNextShot > i2.TimeToNextShot ? i2 : i1);
-			if (bestTurret != null)
+			// Conditions for chosing a turret:
+			// 1) The turret doesn't have a target already
+			// Conditions for chosing the best turret:
+			// 1) The turret has to wait for a minimum amount of time until it can fire
+			// 2) The turret can fire at the threat for the longest time (not implemented yet)
+
+			var availableTurrets = _turrets.Where(x => x.target == null).ToList();
+			if (availableTurrets.Any())
 			{
-				bestTurret.target = target;
+				var bestTurret = availableTurrets.Aggregate((i1, i2) => i1.TimeToNextShot > i2.TimeToNextShot ? i2 : i1);
+				if (bestTurret != null)
+				{
+					bestTurret.target = target;
+				}
+			}
+			else
+			{
+				// Well, this is a problem...
 			}
 		}
 	}
