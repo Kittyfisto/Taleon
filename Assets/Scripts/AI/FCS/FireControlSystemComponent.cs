@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.AI.FCS.PDS;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.AI.FCS.PDS;
 using UnityEngine;
 
 namespace Assets.Scripts.AI.FCS
@@ -17,6 +19,27 @@ namespace Assets.Scripts.AI.FCS
 		private void Start()
 		{
 			_pds = GetComponent<PointDefenseSystemComponent>();
+		}
+
+		private void Update()
+		{
+			var threats = FindThreats();
+			_pds.SetTargets(threats);
+		}
+
+		private IEnumerable<GameObject> FindThreats()
+		{
+			// For now, threats are rockets that are aimed at us...
+			// TODO: This part should be changed to simulate imperfect knowledge
+			var rockets = FindObjectsOfType<RocketComponent>()
+				.Where(TargetsUs)
+				.Select(x => x.gameObject).ToList();
+			return rockets;
+		}
+
+		private bool TargetsUs(RocketComponent rocket)
+		{
+			return rocket.target == gameObject;
 		}
 	}
 }

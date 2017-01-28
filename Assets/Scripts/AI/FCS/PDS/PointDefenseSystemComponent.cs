@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.AI.FCS.PDS
@@ -9,11 +10,24 @@ namespace Assets.Scripts.AI.FCS.PDS
 	/// </summary>
 	public sealed class PointDefenseSystemComponent : MonoBehaviour
 	{
-		private List<GameObject> _targets;
+		private readonly List<GameObject> _targets;
+		private readonly List<PointDefenseTurretComponent> _turrets;
+
+		public PointDefenseSystemComponent()
+		{
+			_targets = new List<GameObject>();
+			_turrets = new List<PointDefenseTurretComponent>();
+		}
 
 		private void Start()
 		{
-			_targets = new List<GameObject>();
+			_turrets.AddRange(GetComponentsInChildren<PointDefenseTurretComponent>());
+		}
+
+		public void SetTargets(IEnumerable<GameObject> targets)
+		{
+			_targets.Clear();
+			_targets.AddRange(targets);
 		}
 
 		public void AddTarget(GameObject target)
@@ -37,8 +51,21 @@ namespace Assets.Scripts.AI.FCS.PDS
 				}
 				else
 				{
+					AssignTarget(target);
 					++i;
 				}
+			}
+		}
+
+		private void AssignTarget(GameObject target)
+		{
+			// Not only should we try to use a turret that can fire at the target, but
+			// we should also chose a turret that can fire the soonest.
+			var availableTurrets = _turrets.Where(x => x.target == null);
+			var bestTurret = availableTurrets.Aggregate((i1, i2) => i1.TimeToNextShot > i2.TimeToNextShot ? i2 : i1);
+			if (bestTurret != null)
+			{
+				bestTurret.target = target;
 			}
 		}
 	}
