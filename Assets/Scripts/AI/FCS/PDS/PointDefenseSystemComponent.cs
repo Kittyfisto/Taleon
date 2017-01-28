@@ -10,13 +10,15 @@ namespace Assets.Scripts.AI.FCS.PDS
 	/// </summary>
 	public sealed class PointDefenseSystemComponent : MonoBehaviour
 	{
-		private readonly List<GameObject> _targets;
+		private readonly List<Threat> _threats;
 		private readonly List<PointDefenseTurretComponent> _turrets;
+		private readonly ThreatComparer _threatComparer;
 
 		public PointDefenseSystemComponent()
 		{
-			_targets = new List<GameObject>();
+			_threats = new List<Threat>();
 			_turrets = new List<PointDefenseTurretComponent>();
+			_threatComparer = new ThreatComparer();
 		}
 
 		private void Start()
@@ -24,31 +26,32 @@ namespace Assets.Scripts.AI.FCS.PDS
 			_turrets.AddRange(GetComponentsInChildren<PointDefenseTurretComponent>());
 		}
 
-		public void SetTargets(IEnumerable<GameObject> targets)
+		public void SetTargets(IEnumerable<Threat> targets)
 		{
-			_targets.Clear();
-			// TODO: Prioritize targets based on the threat they pose to us
-			_targets.AddRange(targets);
+			_threats.Clear();
+			_threats.AddRange(targets);
+			_threats.Sort(_threatComparer);
 		}
 
-		public void AddTarget(GameObject target)
+		public void AddTarget(Threat target)
 		{
-			if (!_targets.Contains(target))
+			if (!_threats.Contains(target))
 			{
-				_targets.Add(target);
+				_threats.Add(target);
 			}
 		}
 
 		private void Update()
 		{
-			for (int i = 0; i < _targets.Count;)
+			for (int i = 0; i < _threats.Count;)
 			{
-				var target = _targets[i];
+				var threat = _threats[i];
+				var target = threat.GameObject;
 				if (target == null)
 				{
 					// A target may no longer exist (because we've destroyed it, yeah!),
 					// so it must be removed from the list of targets...
-					_targets.RemoveAt(i);
+					_threats.RemoveAt(i);
 				}
 				else
 				{
@@ -66,18 +69,29 @@ namespace Assets.Scripts.AI.FCS.PDS
 			// 1) The turret has to wait for a minimum amount of time until it can fire
 			// 2) The turret can fire at the threat for the longest time (not implemented yet)
 
-			var availableTurrets = _turrets.Where(x => x.target == null).ToList();
+			var availableTurrets = _turrets.Where(x => x.Target == null).ToList();
 			if (availableTurrets.Any())
 			{
 				var bestTurret = availableTurrets.Aggregate((i1, i2) => i1.TimeToNextShot > i2.TimeToNextShot ? i2 : i1);
 				if (bestTurret != null)
 				{
-					bestTurret.target = target;
+					bestTurret.Target = target;
 				}
 			}
 			else
 			{
 				// Well, this is a problem...
+			}
+		}
+
+		/// <summary>
+		/// Responsible for comparing the threat two gameobjects pose to this ship.
+		/// </summary>
+		private class ThreatComparer : IComparer<Threat>
+		{
+			public int Compare(Threat x, Threat y)
+			{
+				return x.Distance.CompareTo(y.Distance);
 			}
 		}
 	}

@@ -18,7 +18,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 		/// The target of this turret.
 		/// When set to a non-null object,
 		/// </summary>
-		public GameObject target;
+		public GameObject Target;
 
 		public GameObject ProjectilePrefab;
 
@@ -57,9 +57,9 @@ namespace Assets.Scripts.AI.FCS.PDS
 		{
 			base.Update();
 
-			if (target != null)
+			if (Target != null)
 			{
-				FiringSolution? solution = FindSolution(target);
+				FiringSolution? solution = FindSolution(Target);
 				if (solution != null)
 				{
 					Debug.DrawRay(transform.position, solution.Value.TargetPosition - transform.position);
@@ -72,7 +72,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 				}
 				else
 				{
-					target = null;
+					Target = null;
 				}
 
 			}
@@ -125,8 +125,6 @@ namespace Assets.Scripts.AI.FCS.PDS
 				var firingDirection = futurePosition - projectilePosition;
 				var finalDistance = firingDirection.magnitude;
 				var finalFlyingTime = finalDistance / projectileVelocity;
-				var distanceError = finalDistance - distance;
-				var timeError = finalFlyingTime - flyingTime;
 
 				if (IsProperSolution(finalDistance))
 				{
@@ -134,8 +132,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 					{
 						TargetPosition = futurePosition,
 						FiringDirection = firingDirection / finalDistance,
-						DistanceError = distanceError,
-						TimeError = timeError,
+						InterceptionDistance = finalDistance
 					};
 				}
 

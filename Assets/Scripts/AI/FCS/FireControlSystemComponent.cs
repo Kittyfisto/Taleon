@@ -27,14 +27,23 @@ namespace Assets.Scripts.AI.FCS
 			_pds.SetTargets(threats);
 		}
 
-		private IEnumerable<GameObject> FindThreats()
+		private IEnumerable<Threat> FindThreats()
 		{
 			// For now, threats are rockets that are aimed at us...
 			// TODO: This part should be changed to simulate imperfect knowledge
 			var rockets = FindObjectsOfType<RocketComponent>()
 				.Where(TargetsUs)
-				.Select(x => x.gameObject).ToList();
+				.Select(CreateThreat).ToList();
 			return rockets;
+		}
+
+		private Threat CreateThreat(RocketComponent rocket)
+		{
+			return new Threat
+			{
+				GameObject = rocket.gameObject,
+				Distance = Vector3.Distance(rocket.transform.position, transform.position)
+			};
 		}
 
 		private bool TargetsUs(RocketComponent rocket)
