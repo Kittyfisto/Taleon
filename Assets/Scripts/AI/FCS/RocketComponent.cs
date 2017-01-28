@@ -14,6 +14,11 @@ namespace Assets.Scripts.AI.FCS
 		public GameObject ExplosionPrefab;
 
 		/// <summary>
+		/// The maximum angle the nozzle can be rotated at.
+		/// </summary>
+		public float MaximumNozzleGimbalAngle;
+
+		/// <summary>
 		///     The acceleration of this rocket in units per s².
 		/// </summary>
 		public float Acceleration;
@@ -69,24 +74,29 @@ namespace Assets.Scripts.AI.FCS
 				ActivateEngine();
 			}
 
-			var direction = CalculateEngineDirection();
+			Vector3 targetDirection;
+			var direction = CalculateEngineDirection(out targetDirection);
 			if (_isActivated)
 			{
 				if (_lifeTime < Burntime && target != null)
 				{
 					BurnEngine(direction);
+					
+					Debug.DrawRay(transform.position, targetDirection, Color.green);
+					Debug.DrawRay(transform.position, direction, Color.red);
+					Debug.DrawRay(transform.position, _body.velocity.normalized, Color.blue);
 				}
 				else
 				{
 					StopEngine();
 				}
 
-				var distance = Vector3.Distance(transform.position, target.transform.position);
+				/*var distance = Vector3.Distance(transform.position, target.transform.position);
 				if (distance > _lastDistance)
 				{
 					Explode();
 				}
-				_lastDistance = distance;
+				_lastDistance = distance;*/
 			}
 
 			transform.LookAt(transform.position + _body.velocity.normalized);
@@ -123,24 +133,46 @@ namespace Assets.Scripts.AI.FCS
 			return direction;
 		}
 
-		private Vector3 CalculateEngineDirection()
+		private Vector3 CalculateEngineDirection(out Vector3 targetDirection)
 		{
 			if (target == null)
+			{
+				targetDirection = Vector3.zero;
 				return Vector3.zero;
+			}
 
 			// TODO: Find projected position of target based on its current acceleration
 			var delta = target.transform.position - transform.position;
-			var direction = delta.normalized;
+			targetDirection = delta.normalized;
 
 			// When the movement direction of this rocket does not align with the direction to the target,
 			// then our rocket would naturally overshoot. Therefore we deliberately change the direction we point
 			// our engine at.
 			var movementDirection = _body.velocity.normalized;
-			var up = Vector3.Cross(direction, movementDirection);
-			var planeNormal = Vector3.Cross(up, direction);
-			var desiredDirection = Vector3.ProjectOnPlane(movementDirection, planeNormal);
 
-			return desiredDirection;
+			var error = targetDirection - movementDirection;
+
+			Vector3 accelerationDirection;
+			if (error != Vector3.zero)
+			{
+				var idealAccelerationDirection = targetDirection + error;
+				idealAccelerationDirection = idealAccelerationDirection.normalized;
+
+				// Ideally, we would burn exactly into this direction, however we're constrained
+				// by our engine: Its nozzle can only gimbal so much.
+				// Therefore we clamp the direction to the maximum gimbal angle of the rocket.
+				// (The greater this angle, the more sharp turns the rocket can perform).
+				var forward = transform.forward;
+				var angle = Vector3.Angle(idealAccelerationDirection, forward);
+				var maximumAngle = Mathf.Clamp(angle, 0, MaximumNozzleGimbalAngle);
+				accelerationDirection = Vector3.RotateTowards(forward, idealAccelerationDirection, maximumAngle*Mathf.Deg2Rad, 1);
+			}
+			else
+			{
+				accelerationDirection = movementDirection;
+			}
+
+			return accelerationDirection;
 		}
 
 		private void OnTriggerEnter(Collider other)
