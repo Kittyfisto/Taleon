@@ -9,12 +9,12 @@ namespace Assets.Scripts.AI.FCS
 	/// </summary>
 	public class ProjectileSpawnComponent : MonoBehaviour
 	{
-		public void Spawn(GameObject projectilePrefab, Vector3 direction)
+		public void Spawn(GameObject projectilePrefab, FiringSolution solution)
 		{
 			var body = Instantiate(projectilePrefab);
 			var projectile = body.GetComponent<ProjectileComponent>();
 			var spawnPosition = transform.position;
-			projectile.Shoot(spawnPosition, direction.normalized);
+			projectile.Shoot(spawnPosition, solution);
 		}
 	}
 }

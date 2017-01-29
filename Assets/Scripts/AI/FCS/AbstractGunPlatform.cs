@@ -11,7 +11,7 @@ namespace Assets.Scripts.AI.FCS
 		{
 			foreach (var barrel in _barrels)
 			{
-				barrel.Spawn(ProjectilePrefab, solution.FiringDirection);
+				barrel.Spawn(ProjectilePrefab, solution);
 			}
 			OnShot();
 		}
@@ -37,8 +37,8 @@ namespace Assets.Scripts.AI.FCS
 			var targetAcceleration = rocket.CurrentAcceleration;
 
 			var position = transform.position;
-			var velocity = projectile.velocity;
-			var range = projectile.range;
+			var velocity = projectile.Velocity;
+			var range = projectile.Range;
 
 			return TrySolve(position, velocity, range, targetPosition, targetVelocity, targetAcceleration);
 		}

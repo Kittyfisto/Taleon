@@ -8,25 +8,30 @@ namespace Assets.Scripts.AI.FCS
 		private float _currentLifetime;
 		private float _lifetime;
 
-		public float range;
-		public float velocity;
+		public float Range;
+		public float Velocity;
+
+		protected FiringSolution Solution { get; private set; }
+
+		public Vector3 StartPosition { get; private set; }
 
 		private void Start()
 		{
-			_lifetime = range / velocity;
+			_lifetime = Range / Velocity;
 		}
 
-		public void Shoot(Vector3 position, Vector3 direction)
+		public void Shoot(Vector3 position, FiringSolution solution)
 		{
 			var body = GetComponent<Rigidbody>();
-			transform.position = position;
-			transform.forward = direction;
+			transform.position = StartPosition = position;
+			transform.forward = solution.FiringDirection;
 			body.MovePosition(position);
-			body.velocity = velocity * direction;
+			body.velocity = Velocity * solution.FiringDirection;
+			Solution = solution;
 		}
 
 		// Update is called once per frame
-		private void Update()
+		protected virtual void Update()
 		{
 			_currentLifetime += Time.deltaTime;
 
@@ -39,7 +44,7 @@ namespace Assets.Scripts.AI.FCS
 			Explode(other.gameObject);
 		}
 
-		private void Explode(GameObject otherGameObject)
+		protected virtual void Explode(GameObject otherGameObject)
 		{
 			Destroy(gameObject);
 		}

@@ -12,11 +12,16 @@
 			{
 				if (CanShoot)
 				{
-					var direction = Target.transform.position - transform.position;
+					var targetPosition = Target.transform.position;
+					var delta = targetPosition - transform.position;
+					var distance = delta.magnitude;
+					var direction = delta / distance;
+
 					var solution = new FiringSolution
 					{
-						TargetPosition = Target.transform.position,
+						TargetPosition = targetPosition,
 						FiringDirection = direction,
+						InterceptionDistance = distance
 					};
 					ShootProjectile(solution);
 				}

@@ -11,19 +11,20 @@ namespace Assets.Scripts.AI.FCS.PDS
 	public sealed class PointDefenseSystemComponent : MonoBehaviour
 	{
 		private readonly List<Threat> _threats;
-		private readonly List<PointDefenseTurretComponent> _turrets;
+		private readonly List<AbstractGunPlatform> _turrets;
 		private readonly ThreatComparer _threatComparer;
 
 		public PointDefenseSystemComponent()
 		{
 			_threats = new List<Threat>();
-			_turrets = new List<PointDefenseTurretComponent>();
+			_turrets = new List<AbstractGunPlatform>();
 			_threatComparer = new ThreatComparer();
 		}
 
 		private void Start()
 		{
 			_turrets.AddRange(GetComponentsInChildren<PointDefenseTurretComponent>());
+			_turrets.AddRange(GetComponentsInChildren<FlakTurretComponent>());
 		}
 
 		public void SetTargets(IEnumerable<Threat> targets)
