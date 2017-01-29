@@ -46,6 +46,15 @@ namespace Assets.Scripts.AI.FCS
 
 		protected virtual void Explode(GameObject otherGameObject)
 		{
+			if (otherGameObject != null)
+			{
+				var rocket = otherGameObject.GetComponent<RocketComponent>();
+				if (rocket != null)
+				{
+					rocket.TakeDamage(this);
+				}
+			}
+
 			Destroy(gameObject);
 		}
 	}
