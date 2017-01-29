@@ -16,6 +16,22 @@ namespace Assets.Scripts.AI.FCS
 			OnShot();
 		}
 
+		/// <summary>
+		/// Tries to assign the given gameObject as a <see cref="AbstractWeaponPlatform.Target"/> to this weapon.
+		/// Returns true if this weapon is confident that it can intercept the target in time, false otherwise.
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		public bool TryAssignTarget(GameObject target)
+		{
+			var solution = FindSolution(target);
+			if (solution == null)
+				return false;
+
+			Target = target;
+			return true;
+		}
+
 		protected virtual void Start()
 		{
 			_barrels = GetComponentsInChildren<ProjectileSpawnComponent>();

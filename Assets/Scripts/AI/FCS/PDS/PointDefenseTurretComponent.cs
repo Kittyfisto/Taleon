@@ -3,9 +3,9 @@
 namespace Assets.Scripts.AI.FCS.PDS
 {
 	/// <summary>
-	/// This component is responsible for controlling a single point defense turret.
-	/// This includes aiming the turret at the assigned target and firing projectiles
-	/// whenever ready.
+	///     This component is responsible for controlling a single point defense turret.
+	///     This includes aiming the turret at the assigned target and firing projectiles
+	///     whenever ready.
 	/// </summary>
 	[RequireComponent(typeof(AudioSource))]
 	public class PointDefenseTurretComponent
@@ -13,7 +13,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 	{
 		private AudioSource _audioSource;
 		private bool _isShooting;
-		
+
 		public PointDefenseTurretComponent()
 		{
 			RoundsPerMinute = 60;
@@ -50,23 +50,18 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 			if (Target != null)
 			{
-				FiringSolution? solution = FindSolution(Target);
-				if (solution != null)
+				IsShooting = true;
+				if (CanShoot)
 				{
-					Debug.DrawRay(transform.position, solution.Value.TargetPosition - transform.position);
-
-					IsShooting = true;
-					if (CanShoot)
-					{
+					var solution = FindSolution(Target);
+					if (solution != null)
 						ShootProjectile(solution.Value);
-					}
 				}
 				else
 				{
 					IsShooting = false;
 					Target = null;
 				}
-
 			}
 			else
 			{

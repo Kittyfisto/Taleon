@@ -44,22 +44,21 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 		private void Update()
 		{
-			for (int i = 0; i < _threats.Count;)
+			var untargeted = _threats.Where(x => !IsBeingIntercepted(x)).ToList();
+			foreach (var threat in untargeted)
 			{
-				var threat = _threats[i];
-				var target = threat.GameObject;
-				if (target == null)
-				{
-					// A target may no longer exist (because we've destroyed it, yeah!),
-					// so it must be removed from the list of targets...
-					_threats.RemoveAt(i);
-				}
-				else
-				{
-					AssignTarget(target);
-					++i;
-				}
+				AssignTarget(threat.GameObject);
 			}
+			var targeted = _threats.Where(IsBeingIntercepted).ToList();
+			foreach (var threat in targeted)
+			{
+				AssignTarget(threat.GameObject);
+			}
+		}
+
+		private bool IsBeingIntercepted(Threat arg1)
+		{
+			return _turrets.Any(x => x.Target == arg1.GameObject);
 		}
 
 		private void AssignTarget(GameObject target)
@@ -70,18 +69,13 @@ namespace Assets.Scripts.AI.FCS.PDS
 			// 1) The turret has to wait for a minimum amount of time until it can fire
 			// 2) The turret can fire at the threat for the longest time (not implemented yet)
 
-			var availableTurrets = _turrets.Where(x => x.Target == null).ToList();
-			if (availableTurrets.Any())
+			var availableTurrets = _turrets.Where(x => x.Target == null).OrderBy(x => x.TimeToNextShot).ToList();
+			foreach (var turret in availableTurrets)
 			{
-				var bestTurret = availableTurrets.Aggregate((i1, i2) => i1.TimeToNextShot > i2.TimeToNextShot ? i2 : i1);
-				if (bestTurret != null)
+				if (turret.TryAssignTarget(target))
 				{
-					bestTurret.Target = target;
+					break;
 				}
-			}
-			else
-			{
-				// Well, this is a problem...
 			}
 		}
 

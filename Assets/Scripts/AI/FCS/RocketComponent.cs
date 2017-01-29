@@ -190,9 +190,23 @@ namespace Assets.Scripts.AI.FCS
 
 		private void OnTriggerEnter(Collider other)
 		{
+			var otherGo = other.gameObject;
+			var rocket = otherGo.GetComponent<RocketComponent>();
+			var projectile = otherGo.GetComponent<ProjectileComponent>();
+			if (rocket == null && projectile == null)
+			{
+				Explode();
+			}
+		}
+
+		public void TakeDamage(ProjectileComponent other)
+		{
 			Explode();
 		}
 
+		/// <summary>
+		/// Is called when the rocket successfully intercepts the target .
+		/// </summary>
 		private void Explode()
 		{
 			var explosion = Instantiate(ExplosionPrefab);

@@ -1,9 +1,13 @@
-﻿namespace Assets.Scripts.AI.FCS
+﻿namespace Assets.Scripts.AI.FCS.PDS
 {
 	public class FlakTurretComponent
 		: AbstractGunPlatform
 	{
-		// Update is called once per frame
+		/// <summary>
+		///     The distance from the ship at which the flak screen should be spawned.
+		/// </summary>
+		public float Distance;
+
 		protected override void Update()
 		{
 			base.Update();
