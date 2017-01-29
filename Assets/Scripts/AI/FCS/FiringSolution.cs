@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Scripts.AI.FCS.PDS
+namespace Assets.Scripts.AI.FCS
 {
 	public struct FiringSolution
 	{

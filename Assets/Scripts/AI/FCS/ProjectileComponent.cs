@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.AI.FCS
 {
-	[RequireComponent(typeof(Collider))]
+	[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 	public class ProjectileComponent : MonoBehaviour
 	{
 		private float _currentLifetime;
@@ -18,11 +18,9 @@ namespace Assets.Scripts.AI.FCS
 
 		public void Shoot(Vector3 position, Vector3 direction)
 		{
-			
-
-
 			var body = GetComponent<Rigidbody>();
 			transform.position = position;
+			transform.forward = direction;
 			body.MovePosition(position);
 			body.velocity = velocity * direction;
 		}

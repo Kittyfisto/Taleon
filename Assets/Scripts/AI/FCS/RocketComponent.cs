@@ -102,13 +102,6 @@ namespace Assets.Scripts.AI.FCS
 				{
 					StopEngine();
 				}
-
-				/*var distance = Vector3.Distance(transform.position, target.transform.position);
-				if (distance > _lastDistance)
-				{
-					Explode();
-				}
-				_lastDistance = distance;*/
 			}
 
 			transform.LookAt(transform.position + _body.velocity.normalized);
