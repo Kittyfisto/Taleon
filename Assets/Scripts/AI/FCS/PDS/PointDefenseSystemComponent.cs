@@ -44,24 +44,13 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 		private void Update()
 		{
-			var untargeted = _threats.Where(x => !IsBeingIntercepted(x)).ToList();
-			foreach (var threat in untargeted)
+			foreach (var threat in _threats)
 			{
-				AssignTarget(threat.GameObject);
-			}
-			var targeted = _threats.Where(IsBeingIntercepted).ToList();
-			foreach (var threat in targeted)
-			{
-				AssignTarget(threat.GameObject);
+				AssignToPds(threat.GameObject);
 			}
 		}
 
-		private bool IsBeingIntercepted(Threat arg1)
-		{
-			return _turrets.Any(x => x.Target == arg1.GameObject);
-		}
-
-		private void AssignTarget(GameObject target)
+		private void AssignToPds(GameObject target)
 		{
 			// Conditions for chosing a turret:
 			// 1) The turret doesn't have a target already
@@ -78,7 +67,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 				}
 			}
 		}
-
+		
 		/// <summary>
 		/// Responsible for comparing the threat two gameobjects pose to this ship.
 		/// </summary>

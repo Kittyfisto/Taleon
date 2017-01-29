@@ -19,6 +19,11 @@ namespace Assets.Scripts.AI.FCS.PDS
 			RoundsPerMinute = 60;
 		}
 
+		protected override FiringSolution? FindSolution(GameObject target)
+		{
+			return FiringSolution.FindSolution(gameObject, ProjectilePrefab.GetComponent<ProjectileComponent>(), target);
+		}
+
 		public bool IsShooting
 		{
 			get { return _isShooting; }

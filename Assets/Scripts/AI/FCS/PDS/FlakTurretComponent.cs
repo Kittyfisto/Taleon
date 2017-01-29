@@ -1,6 +1,8 @@
-﻿namespace Assets.Scripts.AI.FCS.PDS
+﻿using UnityEngine;
+
+namespace Assets.Scripts.AI.FCS.PDS
 {
-	public class FlakTurretComponent
+	public sealed class FlakTurretComponent
 		: AbstractGunPlatform
 	{
 		/// <summary>
@@ -16,20 +18,34 @@
 			{
 				if (CanShoot)
 				{
-					var targetPosition = Target.transform.position;
-					var delta = targetPosition - transform.position;
-					var distance = delta.magnitude;
-					var direction = delta / distance;
-
-					var solution = new FiringSolution
+					var solution = FindSolution(Target);
+					if (solution != null)
 					{
-						TargetPosition = targetPosition,
-						FiringDirection = direction,
-						InterceptionDistance = distance
-					};
-					ShootProjectile(solution);
+						ShootProjectile(solution.Value);
+					}
 				}
 			}
+		}
+
+		protected override FiringSolution? FindSolution(GameObject target)
+		{
+			var projectile = ProjectilePrefab.GetComponent<FlakProjectile>();
+			var minimumRange = projectile.MinimumFuseRange;
+
+			var targetPosition = target.transform.position;
+			var delta = targetPosition - transform.position;
+			var distance = delta.magnitude;
+			var direction = delta / distance;
+
+			if (distance < minimumRange)
+				return null;
+
+			return new FiringSolution
+			{
+				TargetPosition = targetPosition,
+				FiringDirection = direction,
+				InterceptionDistance = distance
+			};
 		}
 	}
 }

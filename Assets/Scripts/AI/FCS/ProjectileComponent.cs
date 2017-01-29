@@ -5,25 +5,34 @@ namespace Assets.Scripts.AI.FCS
 	[RequireComponent(typeof(Collider), typeof(Rigidbody))]
 	public class ProjectileComponent : MonoBehaviour
 	{
-		private float _currentLifetime;
-		private float _lifetime;
-
 		public float Range;
 		public float Velocity;
+		private Vector3 _startPosition;
+		private float _distanceTravelled;
+
+		public float CurrentLifetime { get; private set; }
+
+		public float MaximumLifetime
+		{
+			get { return Range / Velocity; }
+		}
+
+		public float DistanceTravelled
+		{
+			get { return _distanceTravelled; }
+		}
 
 		protected FiringSolution Solution { get; private set; }
 
-		public Vector3 StartPosition { get; private set; }
-
-		private void Start()
+		public Vector3 StartPosition
 		{
-			_lifetime = Range / Velocity;
+			get { return _startPosition; }
 		}
 
 		public void Shoot(Vector3 position, FiringSolution solution)
 		{
 			var body = GetComponent<Rigidbody>();
-			transform.position = StartPosition = position;
+			transform.position = _startPosition = position;
 			transform.forward = solution.FiringDirection;
 			body.MovePosition(position);
 			body.velocity = Velocity * solution.FiringDirection;
@@ -33,26 +42,26 @@ namespace Assets.Scripts.AI.FCS
 		// Update is called once per frame
 		protected virtual void Update()
 		{
-			_currentLifetime += Time.deltaTime;
+			CurrentLifetime += Time.deltaTime;
 
-			if (_currentLifetime >= _lifetime)
+			_distanceTravelled = Vector3.Distance(transform.position, _startPosition);
+
+			if (CurrentLifetime >= MaximumLifetime)
 				Destroy(gameObject);
 		}
 
 		private void OnTriggerEnter(Collider other)
 		{
-			Explode(other.gameObject);
+			OnHit(other.gameObject);
 		}
 
-		protected virtual void Explode(GameObject otherGameObject)
+		protected virtual void OnHit(GameObject otherGameObject)
 		{
 			if (otherGameObject != null)
 			{
 				var rocket = otherGameObject.GetComponent<RocketComponent>();
 				if (rocket != null)
-				{
 					rocket.TakeDamage(this);
-				}
 			}
 
 			Destroy(gameObject);
