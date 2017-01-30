@@ -24,7 +24,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 		private void Start()
 		{
 			_turrets.AddRange(GetComponentsInChildren<PointDefenseTurretComponent>());
-			//_turrets.AddRange(GetComponentsInChildren<FlakTurretComponent>());
+			_turrets.AddRange(GetComponentsInChildren<FlakTurretComponent>());
 		}
 
 		public void SetTargets(IEnumerable<Threat> targets)
