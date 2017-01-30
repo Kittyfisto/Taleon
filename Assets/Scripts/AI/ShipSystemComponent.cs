@@ -14,7 +14,6 @@ namespace Assets.Scripts.AI
 		private EngineeringSystemComponent _engineering;
 		private FireControlSystemComponent _fcs;
 		private Vector3? _movementTarget;
-		private MovementIndicatorComponent _indicator;
 		private UnitComponent _unit;
 
 		/// <summary>
@@ -26,35 +25,14 @@ namespace Assets.Scripts.AI
 			set
 			{
 				_movementTarget = value;
-				UpdateMovementVisibility();
 			}
 		}
-
-		private void UpdateMovementVisibility()
-		{
-			if (_movementTarget == null || !_unit.IsSelected)
-			{
-				_indicator.Hide();
-			}
-			else
-			{
-				_indicator.Show(gameObject, _movementTarget.Value);
-			}
-		}
-
+		
 		private void Start()
 		{
 			_engineering = GetComponent<EngineeringSystemComponent>();
 			_fcs = GetComponent<FireControlSystemComponent>();
 			_unit = GetComponent<UnitComponent>();
-
-			_indicator = transform.FindChild("MovementIndicator").GetComponent<MovementIndicatorComponent>();
-			_indicator.Hide();
-		}
-
-		private void Update()
-		{
-			UpdateMovementVisibility();
 		}
 	}
 }

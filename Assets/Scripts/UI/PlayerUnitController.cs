@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.AI;
 using UnityEngine;
 
 namespace Assets.Scripts.UI
@@ -10,16 +9,6 @@ namespace Assets.Scripts.UI
 	/// </summary>
 	public class PlayerUnitController : MonoBehaviour
 	{
-		private bool _isMovementOpen;
-		private MeshCollider _mesh;
-		private MovementIndicatorComponent _indicator;
-
-		private void Start()
-		{
-			_mesh = GameObject.Find("PlayerUnitMovementPlane").GetComponent<MeshCollider>();
-			_indicator = GameObject.Find("PlayerMovementIndicator").GetComponent<MovementIndicatorComponent>();
-		}
-
 		private void Update()
 		{
 			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -40,30 +29,12 @@ namespace Assets.Scripts.UI
 				{
 					SelectUnits(hoveredUnits);
 				}
+			}
 
-				if (selectedUnit != null && _isMovementOpen)
-					MoveUnits(selectedUnit);
-			}
-			if (Input.GetMouseButtonUp(MouseButtons.Right))
-			{
-				if (!_isMovementOpen)
-				{
-					// We want to begin showing a movement indicator that shows the player where he would
-					// send his selected units.
-					_isMovementOpen = true;
-				}
-				else
-				{
-					// We want to cancel our movement...
-					_isMovementOpen = false;
-				}
-			}
 			if (Input.GetButtonUp("Cancel"))
 			{
 				UnselectAll();
 			}
-
-			ShowMovementIndicator(selectedUnit);
 		}
 
 		private void SelectUnits(IEnumerable<UnitComponent> units)
@@ -91,52 +62,6 @@ namespace Assets.Scripts.UI
 			var go = hit.transform.gameObject;
 			var component = go.GetComponent<UnitComponent>();
 			return component != null;
-		}
-		
-		private void MoveUnits(UnitComponent selectable)
-		{
-			var worldPosition = MouseWorldPosition;
-			if (worldPosition != null)
-			{
-				var controller = selectable.GetComponent<ShipSystemComponent>();
-				controller.MovementTarget = worldPosition.Value;
-			}
-			EndMovement();
-		}
-
-		private void ShowMovementIndicator(UnitComponent selectables)
-		{
-			Vector3? worldPosition;
-			if (selectables != null && _isMovementOpen && (worldPosition = MouseWorldPosition) != null)
-			{
-				_indicator.Show(selectables.gameObject, worldPosition.Value);
-			}
-			else
-			{
-				EndMovement();
-			}
-		}
-
-		private void EndMovement()
-		{
-			_indicator.Hide();
-			_isMovementOpen = false;
-		}
-
-		private Vector3? MouseWorldPosition
-		{
-			get
-			{
-				var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-				RaycastHit hitInfo;
-				if (_mesh.Raycast(ray, out hitInfo, 500000))
-				{
-					var worldPoint = hitInfo.point;
-					return worldPoint;
-				}
-
-				return null;
-			}
 		}
 	}
 }
