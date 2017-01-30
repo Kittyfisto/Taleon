@@ -10,13 +10,15 @@ namespace Assets.Scripts.AI.FCS.PDS
 	/// </summary>
 	public sealed class PointDefenseSystemComponent : MonoBehaviour
 	{
-		private readonly List<Threat> _threats;
+		private readonly List<Threat> _sortedThreats;
 		private readonly List<AbstractGunPlatform> _turrets;
 		private readonly ThreatComparer _threatComparer;
+		private readonly HashSet<GameObject> _threats;
 
 		public PointDefenseSystemComponent()
 		{
-			_threats = new List<Threat>();
+			_sortedThreats = new List<Threat>();
+			_threats = new HashSet<GameObject>();
 			_turrets = new List<AbstractGunPlatform>();
 			_threatComparer = new ThreatComparer();
 		}
@@ -29,22 +31,46 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 		public void SetTargets(IEnumerable<Threat> targets)
 		{
+			_sortedThreats.Clear();
+			_sortedThreats.AddRange(targets);
+			_sortedThreats.Sort(_threatComparer);
+
 			_threats.Clear();
-			_threats.AddRange(targets);
-			_threats.Sort(_threatComparer);
+			foreach (var target in _sortedThreats)
+			{
+				_threats.Add(target.GameObject);
+			}
+		}
+		
+		private void Update()
+		{
+			RemoveOldThreats();
+			AssignCurrentThreats();
 		}
 
-		public void AddTarget(Threat target)
+		private void RemoveOldThreats()
 		{
-			if (!_threats.Contains(target))
+			foreach (var turret in _turrets)
 			{
-				_threats.Add(target);
+				var target = turret.Target;
+				if (target != null)
+				{
+					if (!IsThreat(target))
+					{
+						turret.Target = null;
+					}
+				}
 			}
 		}
 
-		private void Update()
+		private bool IsThreat(GameObject target)
 		{
-			foreach (var threat in _threats)
+			return _threats.Contains(target);
+		}
+
+		private void AssignCurrentThreats()
+		{
+			foreach (var threat in _sortedThreats)
 			{
 				AssignToPds(threat.GameObject);
 			}

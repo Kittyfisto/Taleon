@@ -48,8 +48,33 @@ namespace Assets.Scripts.AI.FCS
 
 		private bool TargetsUs(RocketComponent rocket)
 		{
-			return rocket.IsActivated &&
-			       rocket.target == gameObject;
+			if (!rocket.IsActivated)
+				return false;
+
+			if (rocket.target != gameObject)
+				return false;
+
+			if (!FliesTowardsUs(rocket))
+				return false;
+
+			return true;
+		}
+
+		/// <summary>
+		/// Tests if the given rocket is flying towards us.
+		/// </summary>
+		/// <param name="rocket"></param>
+		/// <returns></returns>
+		private bool FliesTowardsUs(RocketComponent rocket)
+		{
+			var body = rocket.GetComponent<Rigidbody>();
+			var velocityDirection = body.velocity.normalized;
+			var delta = (transform.position - rocket.transform.position).normalized;
+			var angle = Vector3.Angle(velocityDirection, delta);
+			if (angle >= 90)
+				return false;
+
+			return true;
 		}
 	}
 }
