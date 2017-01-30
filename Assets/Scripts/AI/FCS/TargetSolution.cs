@@ -17,5 +17,9 @@ namespace Assets.Scripts.AI.FCS
 		/// The required vertical rotation again
 		/// </summary>
 		public float VerticalAngle;
+
+		public float HorizontalDeltaAngle;
+
+		public float VerticalDeltaAngle;
 	}
 }

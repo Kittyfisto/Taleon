@@ -86,36 +86,20 @@ namespace Assets.Scripts.AI.FCS
 				var solution = FindSolution(TargetDirection.Value);
 				if (solution != null)
 				{
-					RotateTurretBase(solution.Value.HorizontalAngle);
-					RotateBarrels(solution.Value.VerticalAngle);
+					RotateTurretBase(solution.Value);
+					RotateBarrels(solution.Value);
 				}
 			}
 		}
 
-		private void RotateTurretBase(float targetAngle)
+		private void RotateTurretBase(TargetSolution solution)
 		{
+			float deltaAngle = solution.HorizontalDeltaAngle;
 			var maximumRotationThisFrame = MaximumHorizontalRotationPerSecond * Time.deltaTime;
-			var currentAngle = HorizontalRotation;
-			var counterClockwiseDelta = targetAngle - currentAngle;
-			float delta;
-
-			if (CanRotateFullCircle && Mathf.Abs(counterClockwiseDelta) > 180)
-			{
-				delta = counterClockwiseDelta < 0
-					? counterClockwiseDelta + 360
-					: counterClockwiseDelta - 360;
-			}
-			else
-			{
-				delta = counterClockwiseDelta;
-			}
-
-			var roationThisFrame = Mathf.Min(Mathf.Abs(delta), maximumRotationThisFrame);
-
-			var actualRoationThisFrame = roationThisFrame * Mathf.Sign(delta);
+			var actualRoationThisFrame = Mathf.Min(maximumRotationThisFrame, Mathf.Abs(deltaAngle)) * Mathf.Sign(deltaAngle);
 			var rotationDelta = Quaternion.AngleAxis(actualRoationThisFrame, Vector3.up);
-			var rotation = transform.rotation * rotationDelta;
-			transform.rotation = rotation;
+			var rotation = transform.localRotation * rotationDelta;
+			transform.localRotation = rotation;
 		}
 
 		public float HorizontalRotation
@@ -129,9 +113,13 @@ namespace Assets.Scripts.AI.FCS
 			}
 		}
 
-		private void RotateBarrels(float targetAngle)
+		private void RotateBarrels(TargetSolution solution)
 		{
-			_hinge.RotateBarrels(targetAngle);
+			var deltaAngle = solution.VerticalDeltaAngle;
+			var maximumRotationThisFrame = MaximumVerticalRotationPerSecond * Time.deltaTime;
+			var actualRoationThisFrame = Mathf.Min(maximumRotationThisFrame, Mathf.Abs(deltaAngle)) * Mathf.Sign(deltaAngle);
+			var rotationDelta = Quaternion.AngleAxis(-actualRoationThisFrame, Vector3.right);
+			_hinge.ApplyRotation(rotationDelta);
 		}
 
 		/// <summary>
@@ -141,12 +129,23 @@ namespace Assets.Scripts.AI.FCS
 		/// <returns></returns>
 		public TargetSolution? FindSolution(Vector3 direction)
 		{
-			var horizontalSign = Mathf.Sign(Vector3.Cross(Vector3.forward, direction).y);
+			var horizontalSign = Mathf.Sign(Vector3.Cross(transform.forward, direction).y);
 			var horizontalDirection = Vector3.ProjectOnPlane(direction, transform.up);
-			var horizontalAngle = Vector3.Angle(Vector3.forward, horizontalDirection) * horizontalSign;
+			var horizontalDelta = Vector3.Angle(transform.forward, horizontalDirection) * horizontalSign;
 
-			var verticalSign = Mathf.Sign(Vector3.Cross(direction, horizontalDirection).y);
+			if (CanRotateFullCircle && Mathf.Abs(horizontalDelta) > 180)
+			{
+				horizontalDelta = horizontalDelta < 0
+					? horizontalDelta + 360
+					: horizontalDelta - 360;
+			}
+
+			var cross = Vector3.Cross(direction, horizontalDirection);
+			var verticalSign = Mathf.Sign(cross.z);
 			var verticalAngle = Vector3.Angle(horizontalDirection, direction) * verticalSign;
+
+			var horizontalAngle = ToDirectionalAngle(transform.localEulerAngles.y + horizontalDelta);
+			var currentVerticalAngle = ToDirectionalAngle(-_hinge.transform.localEulerAngles.x);
 
 			if (horizontalAngle < MinimumHorizontalRotation || horizontalAngle > MaximumHorizontalRotation)
 				return null;
@@ -157,8 +156,19 @@ namespace Assets.Scripts.AI.FCS
 			return new TargetSolution
 			{
 				HorizontalAngle = horizontalAngle,
-				VerticalAngle = verticalAngle
+				HorizontalDeltaAngle = horizontalDelta,
+				VerticalAngle = verticalAngle,
+				VerticalDeltaAngle = verticalAngle - currentVerticalAngle
 			};
+		}
+
+		private float ToDirectionalAngle(float angle)
+		{
+			if (angle > 180)
+				angle -= 360;
+			if (angle < -180)
+				angle += 360;
+			return angle;
 		}
 	}
 }
