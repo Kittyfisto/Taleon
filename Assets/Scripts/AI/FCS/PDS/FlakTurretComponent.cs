@@ -25,7 +25,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 			if (Target != null)
 			{
-				var solution = FindSolution(Target);
+				var solution = FindFiringSolution(Target);
 				if (solution != null)
 				{
 					_turretBase.TargetDirection = solution.Value.FiringDirection;
@@ -45,7 +45,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 			}
 		}
 
-		protected override FiringSolution? FindSolution(GameObject target)
+		protected override FiringSolution? FindFiringSolution(GameObject target)
 		{
 			var projectile = ProjectilePrefab.GetComponent<FlakProjectile>();
 			var minimumRange = projectile.MinimumFuseRange;

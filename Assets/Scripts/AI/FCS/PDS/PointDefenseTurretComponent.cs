@@ -19,7 +19,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 			RoundsPerMinute = 60;
 		}
 
-		protected override FiringSolution? FindSolution(GameObject target)
+		protected override FiringSolution? FindFiringSolution(GameObject target)
 		{
 			return FiringSolution.FindSolution(gameObject, ProjectilePrefab.GetComponent<ProjectileComponent>(), target);
 		}
@@ -58,7 +58,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 				IsShooting = true;
 				if (CanShoot)
 				{
-					var solution = FindSolution(Target);
+					var solution = FindFiringSolution(Target);
 					if (solution != null)
 						ShootProjectile(solution.Value);
 				}

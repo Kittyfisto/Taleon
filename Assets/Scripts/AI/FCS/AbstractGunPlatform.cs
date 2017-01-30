@@ -15,7 +15,7 @@ namespace Assets.Scripts.AI.FCS
 		/// <returns></returns>
 		public bool TryAssignTarget(GameObject target)
 		{
-			var solution = FindSolution(target);
+			var solution = FindFiringSolution(target);
 			if (solution == null)
 				return false;
 
@@ -23,7 +23,7 @@ namespace Assets.Scripts.AI.FCS
 			return true;
 		}
 
-		protected abstract FiringSolution? FindSolution(GameObject target);
+		protected abstract FiringSolution? FindFiringSolution(GameObject target);
 
 		protected void ShootProjectile(FiringSolution solution)
 		{

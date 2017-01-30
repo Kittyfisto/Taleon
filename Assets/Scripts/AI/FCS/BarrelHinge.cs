@@ -2,16 +2,11 @@
 
 namespace Assets.Scripts.AI.FCS
 {
-	public class BarrelHinge : MonoBehaviour {
-
-		// Use this for initialization
-		void Start () {
-		
-		}
-	
-		// Update is called once per frame
-		void Update () {
-		
+	public class BarrelHinge
+		: MonoBehaviour
+	{
+		public void RotateBarrels(float targetAngle)
+		{
 		}
 	}
 }
