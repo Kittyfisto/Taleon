@@ -32,26 +32,38 @@ namespace Assets.Scripts.AI.FCS
 		/// <summary>
 		///     The rotation velocity in degrees per second.
 		/// </summary>
-		public float RotationVelocity;
+		public float TurretRotationInDegPerSecond;
 
 		/// <summary>
 		///     The direction at which this turret shall point at in order to shoot the projectiles.
 		/// </summary>
-		public Vector3 TargetDirection;
-
-		private float _currentRotation;
-		private float _rotationOffset;
+		/// <remarks>
+		///     This direction MUST be given in world space.
+		/// </remarks>
+		public Vector3? TargetDirection;
 
 		// Use this for initialization
 		private void Start()
 		{
 			_hinge = GetComponentInChildren<BarrelHinge>();
-			_rotationOffset = transform.rotation.eulerAngles.y;
 		}
 
 		// Update is called once per frame
 		private void Update()
 		{
+			if (TargetDirection != null)
+			{
+				var targetRotation = Vector3.ProjectOnPlane(TargetDirection.Value, transform.up);
+				var angle = Vector3.Angle(transform.forward, targetRotation);
+				var maximumRotationThisFrame = TurretRotationInDegPerSecond * Time.deltaTime;
+				var roationThisFrame = Mathf.Min(angle, maximumRotationThisFrame);
+
+				var sign = Mathf.Sign(Vector3.Cross(transform.forward, targetRotation).y);
+				var actualRoationThisFrame = roationThisFrame * sign;
+				var rotationDelta = Quaternion.AngleAxis(actualRoationThisFrame, Vector3.up);
+				var rotation = transform.rotation * rotationDelta;
+				transform.rotation = rotation;
+			}
 		}
 	}
 }

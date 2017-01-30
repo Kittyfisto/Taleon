@@ -10,20 +10,38 @@ namespace Assets.Scripts.AI.FCS.PDS
 		/// </summary>
 		public float Distance;
 
+		private TurretBase _turretBase;
+
+		protected override void Start()
+		{
+			base.Start();
+
+			_turretBase = GetComponentInChildren<TurretBase>();
+		}
+
 		protected override void Update()
 		{
 			base.Update();
 
 			if (Target != null)
 			{
-				if (CanShoot)
+				var solution = FindSolution(Target);
+				if (solution != null)
 				{
-					var solution = FindSolution(Target);
-					if (solution != null)
+					_turretBase.TargetDirection = solution.Value.FiringDirection;
+					if (CanShoot)
 					{
 						ShootProjectile(solution.Value);
 					}
 				}
+				else
+				{
+					_turretBase.TargetDirection = null;
+				}
+			}
+			else
+			{
+				_turretBase.TargetDirection = null;
 			}
 		}
 
