@@ -19,7 +19,7 @@ namespace Assets.Scripts.AI.FCS
 		///     the other one.
 		/// </summary>
 		public float InterceptionDistance;
-
+		
 		/// <summary>
 		///     Tries to find a solution that allows us to shoot a projectile that hits the target
 		/// </summary>

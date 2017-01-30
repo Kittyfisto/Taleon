@@ -63,12 +63,37 @@ namespace Assets.Scripts.AI.FCS
 		/// </remarks>
 		public Vector3? TargetDirection;
 
+		private float _currentHorizontalAngle;
+		private float _currentVerticalAngle;
+		private TargetSolution? _currentSolution;
+
 		public bool CanRotateFullCircle
 		{
 			get
 			{
 				return MinimumHorizontalRotation <= -180 &&
 				       MaximumHorizontalRotation >= 180;
+			}
+		}
+
+		/// <summary>
+		/// Whether or not this gun is oriented towards the <see cref="TargetDirection"/> or not.
+		/// </summary>
+		public bool IsTargetInSight
+		{
+			get
+			{
+				if (_currentSolution == null)
+					return false;
+
+				const float errorDelta = 3;
+
+				if (Mathf.Abs(_currentSolution.Value.VerticalDeltaAngle) > errorDelta)
+					return false;
+				if (Mathf.Abs(_currentSolution.Value.HorizontalDeltaAngle) > errorDelta)
+					return false;
+
+				return true;
 			}
 		}
 
@@ -83,12 +108,16 @@ namespace Assets.Scripts.AI.FCS
 		{
 			if (TargetDirection != null)
 			{
-				var solution = FindSolution(TargetDirection.Value);
+				var solution = _currentSolution = FindSolution(TargetDirection.Value);
 				if (solution != null)
 				{
 					RotateTurretBase(solution.Value);
 					RotateBarrels(solution.Value);
 				}
+			}
+			else
+			{
+				_currentSolution = null;
 			}
 		}
 

@@ -29,7 +29,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 				if (solution != null)
 				{
 					_turretBase.TargetDirection = solution.Value.FiringDirection;
-					if (CanShoot)
+					if (CanShoot && _turretBase.IsTargetInSight)
 					{
 						ShootProjectile(solution.Value);
 					}
@@ -57,6 +57,10 @@ namespace Assets.Scripts.AI.FCS.PDS
 
 			if (distance < minimumRange)
 				return null;
+
+			var targetSolution = _turretBase.FindSolution(direction);
+			if (targetSolution == null)
+				return null; //< even if we wanted to, we're not able to point our gun at this solution...
 
 			return new FiringSolution
 			{
