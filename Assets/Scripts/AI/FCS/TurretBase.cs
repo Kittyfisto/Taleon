@@ -97,9 +97,7 @@ namespace Assets.Scripts.AI.FCS
 			float deltaAngle = solution.HorizontalDeltaAngle;
 			var maximumRotationThisFrame = MaximumHorizontalRotationPerSecond * Time.deltaTime;
 			var actualRoationThisFrame = Mathf.Min(maximumRotationThisFrame, Mathf.Abs(deltaAngle)) * Mathf.Sign(deltaAngle);
-			var rotationDelta = Quaternion.AngleAxis(actualRoationThisFrame, Vector3.up);
-			var rotation = transform.localRotation * rotationDelta;
-			transform.localRotation = rotation;
+			transform.Rotate(Vector3.up * actualRoationThisFrame);
 		}
 
 		public float HorizontalRotation
@@ -118,8 +116,7 @@ namespace Assets.Scripts.AI.FCS
 			var deltaAngle = solution.VerticalDeltaAngle;
 			var maximumRotationThisFrame = MaximumVerticalRotationPerSecond * Time.deltaTime;
 			var actualRoationThisFrame = Mathf.Min(maximumRotationThisFrame, Mathf.Abs(deltaAngle)) * Mathf.Sign(deltaAngle);
-			var rotationDelta = Quaternion.AngleAxis(-actualRoationThisFrame, Vector3.right);
-			_hinge.ApplyRotation(rotationDelta);
+			_hinge.RotateBarrels(-actualRoationThisFrame);
 		}
 
 		/// <summary>

@@ -5,10 +5,9 @@ namespace Assets.Scripts.AI.FCS
 	public class BarrelHinge
 		: MonoBehaviour
 	{
-		public void ApplyRotation(Quaternion rotationDelta)
+		public void RotateBarrels(float rotationDelta)
 		{
-			var rotation = transform.localRotation * rotationDelta;
-			transform.localRotation = rotation;
+			transform.Rotate(Vector3.right * rotationDelta);
 		}
 	}
 }
