@@ -16,7 +16,7 @@ namespace Assets.Scripts
 		// Use this for initialization
 		void Start ()
 		{
-			SetTarget("Starship");
+			SetTarget("Farragut");
 			_distance = 100;
 			_verticalAngle = (MaximumYAngle - MinimumYAngle) / 2 + MinimumYAngle;
 		}

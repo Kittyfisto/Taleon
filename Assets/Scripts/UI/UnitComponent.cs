@@ -5,7 +5,7 @@ namespace Assets.Scripts.UI
 	/// <summary>
 	///     Responsible for highlighting selected units.
 	/// </summary>
-	[RequireComponent(typeof(Outline))]
+	//[RequireComponent(typeof(Outline))]
 	public class UnitComponent : MonoBehaviour
 	{
 		private bool _isSelected;
@@ -44,16 +44,16 @@ namespace Assets.Scripts.UI
 		// Use this for initialization
 		private void Start()
 		{
-			_outline = GetComponent<Outline>();
-			_outline.Disable();
+			//_outline = GetComponent<Outline>();
+			//_outline.Disable();
 		}
 
 		private void UpdateOutline()
 		{
-			if (IsHovered || _isSelected)
+			/*if (IsHovered || _isSelected)
 				_outline.Enable();
 			else
-				_outline.Disable();
+				_outline.Disable();*/
 		}
 	}
 }
