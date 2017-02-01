@@ -62,6 +62,7 @@ namespace Assets.Scripts.AI.FCS
 		private GameObject _engine;
 		private float _lastDistance;
 		private float _currentAcceleration;
+		public Vector3 AdditionalVelocity;
 
 		// Use this for initialization
 		private void Start()
@@ -70,8 +71,11 @@ namespace Assets.Scripts.AI.FCS
 			_collider = GetComponent<Collider>();
 			_collider.enabled = false;
 			_engine = transform.FindChild("Engine").gameObject;
-			
-			_body.velocity = transform.forward * InitialVelocity;
+
+			var initial = transform.forward * InitialVelocity;
+			var total = initial + AdditionalVelocity;
+
+			_body.velocity = total;
 			_lastDistance = Vector3.Distance(transform.position, target.transform.position);
 		}
 

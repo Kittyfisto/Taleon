@@ -5,12 +5,19 @@ namespace Assets.Scripts.AI.FCS
 	public class RocketTurretComponent
 		: AbstractWeaponPlatform
 	{
+		private ShipSystemComponent _ship;
+
 		public RocketTurretComponent()
 		{
 			RoundsPerMinute = 30;
 		}
 
 		public bool IsShooting { get; set; }
+
+		private void Start()
+		{
+			_ship = transform.parent.GetComponent<ShipSystemComponent>();
+		}
 
 		// Update is called once per frame
 		protected override void Update()
@@ -36,6 +43,10 @@ namespace Assets.Scripts.AI.FCS
 			go.transform.forward = transform.forward;
 			var rocket = go.GetComponent<RocketComponent>();
 			rocket.target = target;
+
+			if (_ship != null)
+				rocket.AdditionalVelocity = _ship.CurrentVelocity;
+
 			OnShot();
 		}
 	}

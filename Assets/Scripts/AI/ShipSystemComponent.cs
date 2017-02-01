@@ -27,7 +27,12 @@ namespace Assets.Scripts.AI
 				_movementTarget = value;
 			}
 		}
-		
+
+		public Vector3 CurrentVelocity
+		{
+			get { return _navigation.CurrentVelocity; }
+		}
+
 		private void Start()
 		{
 			_navigation = GetComponent<NavigationSystemComponent>();

@@ -10,7 +10,7 @@ namespace Assets.Scripts.AI
 		private float _targetVelocity;
 		private EngineSystem _engine;
 
-		public float CurrentVelocity
+		public Vector3 CurrentVelocity
 		{
 			get { return _engine.CurrentVelocity; }
 		}
@@ -27,7 +27,7 @@ namespace Assets.Scripts.AI
 
 		private void Update()
 		{
-			var velocity = _engine.CurrentVelocity;
+			var velocity = _engine.CurrentVelocity.magnitude;
 			var error = _targetVelocity - velocity;
 			if (Mathf.Abs(error) > 0.01)
 			{

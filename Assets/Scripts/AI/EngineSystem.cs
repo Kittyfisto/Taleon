@@ -21,7 +21,7 @@ namespace Assets.Scripts.AI
 		// Update is called once per frame
 		private void Update()
 		{
-			_velocity = _body.velocity.magnitude;
+			_velocity = _body.velocity;
 		}
 
 		public bool IsFiring
@@ -29,7 +29,7 @@ namespace Assets.Scripts.AI
 			get { return _isFiring; }
 		}
 
-		public float CurrentVelocity
+		public Vector3 CurrentVelocity
 		{
 			get { return _velocity; }
 		}
@@ -39,7 +39,7 @@ namespace Assets.Scripts.AI
 		/// </summary>
 		public float MaximumAcceleration = 10;
 
-		private float _velocity;
+		private Vector3 _velocity;
 
 		public void Burn(float acceleration)
 		{

@@ -28,7 +28,7 @@ namespace Assets.Scripts.UI
 		private void Update()
 		{
 			_currentVelocity.text = string.Format("{0:F1} ({1})",
-				_navigation.CurrentVelocity,
+				_navigation.CurrentVelocity.magnitude,
 				_playerUnitController.TargetVelocity);
 		}
 	}
