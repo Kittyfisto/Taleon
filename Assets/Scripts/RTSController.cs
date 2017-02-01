@@ -35,6 +35,19 @@ namespace Assets.Scripts
 			ChangeDistance();
 			ChangeOrientation();
 			UpdatePositions();
+			ChangeDistantObjects();
+		}
+
+		private void ChangeDistantObjects()
+		{
+			var cameraPosition = Camera.main.transform.position;
+			var objects = FindObjectsOfType<DistantObjectComponent>();
+			foreach (var component in objects)
+			{
+				var offset = component.Offset;
+				var position = cameraPosition + offset;
+				component.transform.position = position;
+			}
 		}
 
 		private void ChangeDistance()
