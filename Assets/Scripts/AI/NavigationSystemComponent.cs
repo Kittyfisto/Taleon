@@ -9,13 +9,14 @@ namespace Assets.Scripts.AI
 	{
 		private float _targetVelocity;
 		private EngineSystem _engine;
-		private Vector3 _targetWorldDirection;
 		private bool _facingInTargetDirection;
 		private bool _movingInTargetDirection;
 
-		public Vector3 TargetWorldDirection
+		private Vector3 _targetWorldForward;
+
+		public Vector3 TargetWorldForward
 		{
-			get { return _targetWorldDirection; }
+			get { return _targetWorldForward; }
 		}
 
 		public Vector3 CurrentVelocity
@@ -29,7 +30,7 @@ namespace Assets.Scripts.AI
 			if (_targetVelocity <= 0.001)
 			{
 				// We must ensure that we're pointing in the right direction
-				_targetWorldDirection = -MovementDirection;
+				_targetWorldForward = -MovementDirection;
 			}
 		}
 
@@ -46,7 +47,7 @@ namespace Assets.Scripts.AI
 		private void Start()
 		{
 			_engine = GetComponentInChildren<EngineSystem>();
-			_targetWorldDirection = transform.forward;
+			_targetWorldForward = transform.forward;
 		}
 
 		private void Update()
@@ -54,18 +55,19 @@ namespace Assets.Scripts.AI
 			ChangeDirection();
 			ChangeVelocity();
 
-			Debug.DrawRay(transform.position, _targetWorldDirection*10, Color.green);
+			Debug.DrawRay(transform.position, _targetWorldForward*10, Color.green);
+
 			Debug.DrawRay(transform.position, MovementDirection*10, Color.blue);
 		}
 
 		private void ChangeDirection()
 		{
 			var forward = transform.forward;
-			var directionError = Vector3.Angle(_targetWorldDirection, forward);
+			var directionError = Vector3.Angle(_targetWorldForward, forward);
 
-			if (Mathf.Abs(directionError) > 0.01f)
+			if (Mathf.Abs(directionError) > 1f)
 			{
-				_engine.OrientShipTowards(_targetWorldDirection, directionError);
+				_engine.OrientShipTowards(_targetWorldForward, directionError);
 				_facingInTargetDirection = false;
 			}
 			else
@@ -76,8 +78,8 @@ namespace Assets.Scripts.AI
 
 		private void ChangeVelocity()
 		{
-			var directionError = Vector3.Angle(_targetWorldDirection, MovementDirection);
-			_movingInTargetDirection = Mathf.Abs(directionError) < 0.01f;
+			var directionError = Vector3.Angle(_targetWorldForward, MovementDirection);
+			_movingInTargetDirection = Mathf.Abs(directionError) < 1f;
 
 			var velocity = _engine.CurrentVelocity.magnitude;
 			var deltaVelocity = _targetVelocity - velocity;
@@ -108,7 +110,8 @@ namespace Assets.Scripts.AI
 			if (length < 0.01)
 				return;
 
-			_targetWorldDirection = worldTargetDirection/length;
+			var newForward = worldTargetDirection/length;
+			_targetWorldForward = newForward;
 		}
 	}
 }

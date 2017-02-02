@@ -35,7 +35,7 @@ namespace Assets.Scripts.AI
 
 		public Vector3 WorldFacingDirection
 		{
-			get { return _navigation.TargetWorldDirection; }
+			get { return _navigation.TargetWorldForward; }
 		}
 
 		private void Start()

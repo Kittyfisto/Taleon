@@ -113,16 +113,37 @@ namespace Assets.Scripts.AI
 		/// <param name="angle"></param>
 		public void OrientShipTowards(Vector3 targetDirection, float angle)
 		{
-			var maximumRotationChange = MaximumAngularVelocity * Time.deltaTime;
-			var requiredRotationChange = Mathf.Clamp(maximumRotationChange, 0, angle);
-			var change = Mathf.Deg2Rad*requiredRotationChange;
+			var current = transform.forward;
+			//var delta = targetDirection - current;
+			var axis = Vector3.Cross(current, targetDirection);
+			var currentVelocity = Mathf.Rad2Deg * Vector3.Project(_body.angularVelocity, axis).magnitude;
 
-			var newDirection = Vector3.RotateTowards(transform.forward, targetDirection, change, 0);
-			transform.forward = newDirection;
+			var change = Mathf.Clamp(MaximumAngularVelocity * Time.deltaTime, 0, angle);
+			var torque = axis * change;
+
+			var timeToTarget = angle / currentVelocity;
+			var timeToZero = currentVelocity / MaximumAngularVelocity;
+
+			if (timeToZero > timeToTarget)
+			{
+				// Slow down
+				torque *= -1;
+			}
+			else
+			{
+				// Slow up
+			}
+
+			Debug.DrawRay(transform.position, torque, Color.cyan);
+
+			_body.AddTorque(torque);
 		}
 
 		public void RotateShip(RotationDirection direction)
 		{
+			if (direction == RotationDirection.None)
+				return;
+
 			var sign = direction == RotationDirection.Left ? 1 : -1;
 			var angularChange = sign * MaximumAngularVelocity * Time.deltaTime;
 			transform.Rotate(Vector3.forward, angularChange, Space.Self);
