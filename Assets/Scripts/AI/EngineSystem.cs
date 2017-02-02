@@ -9,7 +9,8 @@ namespace Assets.Scripts.AI
 		private GameObject _engine;
 
 		private Rigidbody _body;
-		private bool _isFiring;
+		private bool _isFiringMainEngine;
+		private float _angularVelocity;
 
 		// Use this for initialization
 		private void Start()
@@ -24,14 +25,27 @@ namespace Assets.Scripts.AI
 			_velocity = _body.velocity;
 		}
 
-		public bool IsFiring
+		public bool IsFiringMainEngine
 		{
-			get { return _isFiring; }
+			get { return _isFiringMainEngine; }
 		}
 
 		public Vector3 CurrentVelocity
 		{
 			get { return _velocity; }
+		}
+
+		public Vector3 MovementDirection
+		{
+			get
+			{
+				var velocity = _body.velocity;
+				var length = velocity.magnitude;
+				if (length <= 0.001)
+					return Vector3.zero;
+
+				return velocity/length;
+			}
 		}
 
 		/// <summary>
@@ -42,45 +56,65 @@ namespace Assets.Scripts.AI
 		/// <summary>
 		/// 10 deg/s
 		/// </summary>
-		public float MaximumAngularVelocity = 90;
+		public float MaximumAngularVelocity = 10;
 
 		private Vector3 _velocity;
 
-		public void Burn(float acceleration)
+		public void Burn(EngineType engineType, float deltaVelocity)
 		{
-			var force = transform.forward * acceleration;
+			var requiredAcceleration = deltaVelocity / Time.deltaTime;
+			float maximumAcceleration;
+			Vector3 direction;
+
+			switch (engineType)
+			{
+				case EngineType.Main:
+					maximumAcceleration = MaximumAcceleration;
+					direction = transform.forward;
+					_isFiringMainEngine = true;
+					break;
+
+				case EngineType.BackwardsThrusters:
+					maximumAcceleration = 2;
+					direction = -transform.forward;
+					break;
+
+				default:
+					Debug.LogWarningFormat("Unknown engine type: {0}", engineType);
+					return;
+			}
+
+			float currentAcceleration = Mathf.Clamp(requiredAcceleration, 0, maximumAcceleration);
+			var force = direction * currentAcceleration;
 			_body.AddForce(force);
 
-			_isFiring = true;
 			UpdateEngine();
 		}
 
 		public void Stop()
 		{
-			_isFiring = false;
+			_isFiringMainEngine = false;
 			UpdateEngine();
 		}
 
 		private void UpdateEngine()
 		{
-			_engine.SetActive(_isFiring);
+			_engine.SetActive(_isFiringMainEngine);
 		}
 
 		/// <summary>
-		/// 
 		/// </summary>
-		/// <param name="rotationAxis"></param>
+		/// <param name="targetDirection"></param>
 		/// <param name="angle"></param>
 		/// <param name="angularVelocity">The angular velocity in deg per second</param>
-		public void RotateAround(Vector3 rotationAxis, float angle, float angularVelocity)
+		public void OrientShipTowards(Vector3 targetDirection, float angle, float angularVelocity)
 		{
-			//_body.AddTorque(rotationAxis*angularVelocity*Time.deltaTime);
-			var deltaAngle = MaximumAngularVelocity * Time.deltaTime;
-			deltaAngle = Mathf.Clamp(deltaAngle, 0, angle);
+			var maximumRotationChange = MaximumAngularVelocity * Time.deltaTime;
+			var requiredRotationChange = Mathf.Clamp(maximumRotationChange, 0, angle);
+			var change = Mathf.Deg2Rad*requiredRotationChange;
 
-			transform.RotateAround(transform.position,
-				rotationAxis,
-				deltaAngle);
+			var newDirection = Vector3.RotateTowards(transform.forward, targetDirection, change, 0);
+			transform.forward = newDirection;
 		}
 	}
 }

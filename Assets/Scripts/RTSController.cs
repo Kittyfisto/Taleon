@@ -69,7 +69,7 @@ namespace Assets.Scripts
 			const float speed = Mathf.Deg2Rad*0.3f;
 
 			var currentPosition = Input.mousePosition;
-			if (Input.GetMouseButton(MouseButtons.Left))
+			if (Input.GetMouseButton(MouseButtons.Right))
 			{
 				var mouseDelta = currentPosition - _lastPosition;
 				var deltaH = mouseDelta.x * speed;
@@ -78,7 +78,6 @@ namespace Assets.Scripts
 				var deltaV = mouseDelta.y * speed;
 				_verticalAngle += deltaV;
 				_verticalAngle = Mathf.Clamp(_verticalAngle, MinimumYAngle, MaximumYAngle);
-
 
 				//Debug.LogFormat("Moving camera: x={0}, y={1}", _horizontalAngle, _verticalAngle);
 			}

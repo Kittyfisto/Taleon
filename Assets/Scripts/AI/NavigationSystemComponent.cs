@@ -11,7 +11,8 @@ namespace Assets.Scripts.AI
 		private float _targetRotation;
 		private EngineSystem _engine;
 		private Vector3 _targetWorldDirection;
-		private bool _facingInDirection;
+		private bool _facingInTargetDirection;
+		private bool _movingInTargetDirection;
 
 		public Vector3 TargetWorldDirection
 		{
@@ -26,6 +27,16 @@ namespace Assets.Scripts.AI
 		public void SetVelocity(float velocity)
 		{
 			_targetVelocity = Mathf.Clamp(velocity, 0, float.MaxValue);
+			if (_targetVelocity <= 0.001)
+			{
+				// We must ensure that we're pointing in the right direction
+				_targetWorldDirection = -MovementDirection;
+			}
+		}
+
+		public Vector3 MovementDirection
+		{
+			get { return _engine.MovementDirection; }
 		}
 
 		public void SetRotation(float rotation)
@@ -43,36 +54,49 @@ namespace Assets.Scripts.AI
 		{
 			ChangeDirection();
 			ChangeVelocity();
+
+			Debug.DrawRay(transform.position, _targetWorldDirection*10);
 		}
 
 		private void ChangeDirection()
 		{
 			var forward = transform.forward;
 			var directionError = Vector3.Angle(_targetWorldDirection, forward);
-			var directionSign = Vector3.Cross(_targetWorldDirection, forward);
 
 			if (Mathf.Abs(directionError) > 0.01f)
 			{
 				var relativeSpeed = Mathf.Clamp(Mathf.InverseLerp(0, 10, directionError), 0, 1);
 				var angularSpeed = relativeSpeed * 10;
-				_engine.RotateAround(transform.right, directionError, angularSpeed);
-				_facingInDirection = false;
+				_engine.OrientShipTowards(_targetWorldDirection, directionError, angularSpeed);
+				_facingInTargetDirection = false;
 			}
 			else
 			{
-				_facingInDirection = true;
+				_facingInTargetDirection = true;
 			}
 		}
 
 		private void ChangeVelocity()
 		{
-			var velocity = _engine.CurrentVelocity.magnitude;
-			var error = _targetVelocity - velocity;
+			var directionError = Vector3.Angle(_targetWorldDirection, MovementDirection);
+			_movingInTargetDirection = Mathf.Abs(directionError) < 0.01f;
 
-			if (_facingInDirection && Mathf.Abs(error) > 0.01f)
+			var velocity = _engine.CurrentVelocity.magnitude;
+			var deltaVelocity = _targetVelocity - velocity;
+			var fuck = Mathf.Abs(deltaVelocity);
+
+			if (_facingInTargetDirection && fuck > 0.01f)
 			{
-				var a = _engine.MaximumAcceleration;
-				_engine.Burn(a);
+				if (deltaVelocity > 0 || !_movingInTargetDirection)
+				{
+					// Are we slower than intended? => burn the main engines
+					_engine.Burn(EngineType.Main, fuck);
+				}
+				else
+				{
+					// We're slightly faster than we intend to
+					_engine.Burn(EngineType.BackwardsThrusters, fuck);
+				}
 			}
 			else
 			{

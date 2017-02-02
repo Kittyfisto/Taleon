@@ -48,9 +48,6 @@ namespace Assets.Scripts.AI
 		public void SetVelocity(Velocity velocity)
 		{
 			var velocityMagnitude = Mathf.Abs((int)velocity * 10);
-			if (velocityMagnitude < CurrentVelocity.magnitude)
-				TurnAround();
-
 			_navigation.SetVelocity(velocityMagnitude);
 		}
 

@@ -29,6 +29,15 @@ namespace Assets.Scripts
 				SetRotation(TargetRotation - 1);
 			if (Input.GetKeyDown(KeyCode.E))
 				SetRotation(TargetRotation + 1);
+			if (Input.GetMouseButton(MouseButtons.Left))
+				ChangeDirectionToMouse();
+		}
+
+		private void ChangeDirectionToMouse()
+		{
+			var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			var direction = ray.direction;
+			_ship.SetTargetDirection(direction);
 		}
 
 		public void TurnAround()
