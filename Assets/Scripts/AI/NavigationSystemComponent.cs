@@ -11,6 +11,7 @@ namespace Assets.Scripts.AI
 		private float _targetRotation;
 		private EngineSystem _engine;
 		private Vector3 _targetWorldDirection;
+		private bool _facingInDirection;
 
 		public Vector3 TargetWorldDirection
 		{
@@ -22,9 +23,8 @@ namespace Assets.Scripts.AI
 			get { return _engine.CurrentVelocity; }
 		}
 
-		public void SetVelocity(Vector3 worldDirection, float velocity)
+		public void SetVelocity(float velocity)
 		{
-			_targetWorldDirection = worldDirection;
 			_targetVelocity = Mathf.Clamp(velocity, 0, float.MaxValue);
 		}
 
@@ -56,6 +56,11 @@ namespace Assets.Scripts.AI
 				var relativeSpeed = Mathf.Clamp(Mathf.InverseLerp(0, 10, directionError), 0, 1);
 				var angularSpeed = relativeSpeed * 10;
 				_engine.RotateAround(transform.right, directionError, angularSpeed);
+				_facingInDirection = false;
+			}
+			else
+			{
+				_facingInDirection = true;
 			}
 		}
 
@@ -63,10 +68,11 @@ namespace Assets.Scripts.AI
 		{
 			var velocity = _engine.CurrentVelocity.magnitude;
 			var error = _targetVelocity - velocity;
-			if (Mathf.Abs(error) > 0.01f)
+
+			if (_facingInDirection && Mathf.Abs(error) > 0.01f)
 			{
 				var a = _engine.MaximumAcceleration;
-				_engine.Burn(Mathf.Sign(error) * a);
+				_engine.Burn(a);
 			}
 			else
 			{

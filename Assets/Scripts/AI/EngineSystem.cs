@@ -39,6 +39,11 @@ namespace Assets.Scripts.AI
 		/// </summary>
 		public float MaximumAcceleration = 10;
 
+		/// <summary>
+		/// 10 deg/s
+		/// </summary>
+		public float MaximumAngularVelocity = 90;
+
 		private Vector3 _velocity;
 
 		public void Burn(float acceleration)
@@ -69,9 +74,13 @@ namespace Assets.Scripts.AI
 		/// <param name="angularVelocity">The angular velocity in deg per second</param>
 		public void RotateAround(Vector3 rotationAxis, float angle, float angularVelocity)
 		{
+			//_body.AddTorque(rotationAxis*angularVelocity*Time.deltaTime);
+			var deltaAngle = MaximumAngularVelocity * Time.deltaTime;
+			deltaAngle = Mathf.Clamp(deltaAngle, 0, angle);
+
 			transform.RotateAround(transform.position,
 				rotationAxis,
-				angle);
+				deltaAngle);
 		}
 	}
 }

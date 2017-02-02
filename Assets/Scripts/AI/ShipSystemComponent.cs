@@ -33,7 +33,7 @@ namespace Assets.Scripts.AI
 			get { return _navigation.CurrentVelocity; }
 		}
 
-		public Vector3 WorldTargetDirection
+		public Vector3 WorldFacingDirection
 		{
 			get { return _navigation.TargetWorldDirection; }
 		}
@@ -48,11 +48,10 @@ namespace Assets.Scripts.AI
 		public void SetVelocity(Velocity velocity)
 		{
 			var velocityMagnitude = Mathf.Abs((int)velocity * 10);
-			var direction = velocity >= Velocity.Stop
-				? transform.forward
-				: -transform.forward;
+			if (velocityMagnitude < CurrentVelocity.magnitude)
+				TurnAround();
 
-			_navigation.SetVelocity(direction, velocityMagnitude);
+			_navigation.SetVelocity(velocityMagnitude);
 		}
 
 		public void SetRotation(Rotation rotation)
@@ -63,6 +62,11 @@ namespace Assets.Scripts.AI
 		public void SetTargetDirection(Vector3 worldTargetDirection)
 		{
 			_navigation.SetDirection(worldTargetDirection);
+		}
+
+		public void TurnAround()
+		{
+			SetTargetDirection(-WorldFacingDirection);
 		}
 	}
 }

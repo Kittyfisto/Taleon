@@ -33,12 +33,12 @@ namespace Assets.Scripts
 
 		public void TurnAround()
 		{
-			_ship.SetTargetDirection(-_ship.WorldTargetDirection);
+			_ship.TurnAround();
 		}
 
 		public void StopShip()
 		{
-			_ship.SetVelocity(Velocity.Stop);
+			SetVelocity(Velocity.Stop);
 		}
 
 		private void SetRotation(Rotation rotation)
