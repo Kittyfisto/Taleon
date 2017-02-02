@@ -12,7 +12,6 @@ namespace Assets.Scripts
 		private ShipSystemComponent _ship;
 
 		public Velocity TargetVelocity;
-		public Rotation TargetRotation;
 
 		private void Start()
 		{
@@ -25,10 +24,10 @@ namespace Assets.Scripts
 				SetVelocity(TargetVelocity + 1);
 			if (Input.GetKeyDown(KeyCode.S))
 				SetVelocity(TargetVelocity - 1);
-			if (Input.GetKeyDown(KeyCode.Q))
-				SetRotation(TargetRotation - 1);
-			if (Input.GetKeyDown(KeyCode.E))
-				SetRotation(TargetRotation + 1);
+			if (Input.GetKey(KeyCode.A))
+				Rotate(RotationDirection.Left);
+			if (Input.GetKey(KeyCode.D))
+				Rotate(RotationDirection.Right);
 			if (Input.GetMouseButton(MouseButtons.Left))
 				ChangeDirectionToMouse();
 		}
@@ -50,15 +49,9 @@ namespace Assets.Scripts
 			SetVelocity(Velocity.Stop);
 		}
 
-		private void SetRotation(Rotation rotation)
+		private void Rotate(RotationDirection direction)
 		{
-			if (rotation < Rotation.FullLeft)
-				TargetRotation = Rotation.FullLeft;
-			else if (rotation > Rotation.FullRight)
-				TargetRotation = Rotation.FullRight;
-			else
-				TargetRotation = rotation;
-			_ship.SetRotation(TargetRotation);
+			_ship.Rotate(direction);
 		}
 
 		private void SetVelocity(Velocity velocity)

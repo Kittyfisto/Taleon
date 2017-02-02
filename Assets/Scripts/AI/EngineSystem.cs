@@ -54,6 +54,11 @@ namespace Assets.Scripts.AI
 		public float MaximumAcceleration = 10;
 
 		/// <summary>
+		/// 2m/s²
+		/// </summary>
+		public float MaximumThrusterAcceleration = 2;
+
+		/// <summary>
 		/// 10 deg/s
 		/// </summary>
 		public float MaximumAngularVelocity = 10;
@@ -106,7 +111,6 @@ namespace Assets.Scripts.AI
 		/// </summary>
 		/// <param name="targetDirection"></param>
 		/// <param name="angle"></param>
-		/// <param name="angularVelocity">The angular velocity in deg per second</param>
 		public void OrientShipTowards(Vector3 targetDirection, float angle)
 		{
 			var maximumRotationChange = MaximumAngularVelocity * Time.deltaTime;
@@ -115,6 +119,13 @@ namespace Assets.Scripts.AI
 
 			var newDirection = Vector3.RotateTowards(transform.forward, targetDirection, change, 0);
 			transform.forward = newDirection;
+		}
+
+		public void RotateShip(RotationDirection direction)
+		{
+			var sign = direction == RotationDirection.Left ? 1 : -1;
+			var angularChange = sign * MaximumAngularVelocity * Time.deltaTime;
+			transform.Rotate(Vector3.forward, angularChange, Space.Self);
 		}
 	}
 }

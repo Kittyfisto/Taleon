@@ -51,9 +51,9 @@ namespace Assets.Scripts.AI
 			_navigation.SetVelocity(velocityMagnitude);
 		}
 
-		public void SetRotation(Rotation rotation)
+		public void Rotate(RotationDirection direction)
 		{
-			_navigation.SetRotation((int) rotation * 10);
+			_navigation.Rotate(direction);
 		}
 
 		public void SetTargetDirection(Vector3 worldTargetDirection)

@@ -8,7 +8,6 @@ namespace Assets.Scripts.AI
 	public class NavigationSystemComponent : MonoBehaviour
 	{
 		private float _targetVelocity;
-		private float _targetRotation;
 		private EngineSystem _engine;
 		private Vector3 _targetWorldDirection;
 		private bool _facingInTargetDirection;
@@ -39,9 +38,9 @@ namespace Assets.Scripts.AI
 			get { return _engine.MovementDirection; }
 		}
 
-		public void SetRotation(float rotation)
+		public void Rotate(RotationDirection direction)
 		{
-			_targetRotation = rotation;
+			_engine.RotateShip(direction);
 		}
 
 		private void Start()
@@ -55,7 +54,8 @@ namespace Assets.Scripts.AI
 			ChangeDirection();
 			ChangeVelocity();
 
-			Debug.DrawRay(transform.position, _targetWorldDirection*10);
+			Debug.DrawRay(transform.position, _targetWorldDirection*10, Color.green);
+			Debug.DrawRay(transform.position, MovementDirection*10, Color.blue);
 		}
 
 		private void ChangeDirection()
@@ -81,19 +81,19 @@ namespace Assets.Scripts.AI
 
 			var velocity = _engine.CurrentVelocity.magnitude;
 			var deltaVelocity = _targetVelocity - velocity;
-			var fuck = Mathf.Abs(deltaVelocity);
+			var velocityError = Mathf.Abs(deltaVelocity);
 
-			if (_facingInTargetDirection && fuck > 0.01f)
+			if (_facingInTargetDirection && velocityError > 0.01f)
 			{
 				if (deltaVelocity > 0 || !_movingInTargetDirection)
 				{
 					// Are we slower than intended? => burn the main engines
-					_engine.Burn(EngineType.Main, fuck);
+					_engine.Burn(EngineType.Main, velocityError);
 				}
 				else
 				{
 					// We're slightly faster than we intend to
-					_engine.Burn(EngineType.BackwardsThrusters, fuck);
+					_engine.Burn(EngineType.BackwardsThrusters, velocityError);
 				}
 			}
 			else
