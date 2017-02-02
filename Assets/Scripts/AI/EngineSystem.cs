@@ -107,7 +107,7 @@ namespace Assets.Scripts.AI
 		/// <param name="targetDirection"></param>
 		/// <param name="angle"></param>
 		/// <param name="angularVelocity">The angular velocity in deg per second</param>
-		public void OrientShipTowards(Vector3 targetDirection, float angle, float angularVelocity)
+		public void OrientShipTowards(Vector3 targetDirection, float angle)
 		{
 			var maximumRotationChange = MaximumAngularVelocity * Time.deltaTime;
 			var requiredRotationChange = Mathf.Clamp(maximumRotationChange, 0, angle);

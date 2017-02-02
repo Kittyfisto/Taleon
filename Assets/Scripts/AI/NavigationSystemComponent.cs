@@ -65,9 +65,7 @@ namespace Assets.Scripts.AI
 
 			if (Mathf.Abs(directionError) > 0.01f)
 			{
-				var relativeSpeed = Mathf.Clamp(Mathf.InverseLerp(0, 10, directionError), 0, 1);
-				var angularSpeed = relativeSpeed * 10;
-				_engine.OrientShipTowards(_targetWorldDirection, directionError, angularSpeed);
+				_engine.OrientShipTowards(_targetWorldDirection, directionError);
 				_facingInTargetDirection = false;
 			}
 			else
