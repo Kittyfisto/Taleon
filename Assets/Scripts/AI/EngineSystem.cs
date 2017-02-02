@@ -60,5 +60,18 @@ namespace Assets.Scripts.AI
 		{
 			_engine.SetActive(_isFiring);
 		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="rotationAxis"></param>
+		/// <param name="angle"></param>
+		/// <param name="angularVelocity">The angular velocity in deg per second</param>
+		public void RotateAround(Vector3 rotationAxis, float angle, float angularVelocity)
+		{
+			transform.RotateAround(transform.position,
+				rotationAxis,
+				angle);
+		}
 	}
 }

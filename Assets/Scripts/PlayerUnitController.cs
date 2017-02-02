@@ -11,7 +11,8 @@ namespace Assets.Scripts
 	{
 		private ShipSystemComponent _ship;
 
-		public int TargetVelocity;
+		public Velocity TargetVelocity;
+		public Rotation TargetRotation;
 
 		private void Start()
 		{
@@ -24,15 +25,32 @@ namespace Assets.Scripts
 				SetVelocity(TargetVelocity + 1);
 			if (Input.GetKeyDown(KeyCode.S))
 				SetVelocity(TargetVelocity - 1);
+			if (Input.GetKeyDown(KeyCode.Q))
+				SetRotation(TargetRotation - 1);
+			if (Input.GetKeyDown(KeyCode.E))
+				SetRotation(TargetRotation + 1);
 		}
 
-		private void SetVelocity(int velocity)
+		private void SetRotation(Rotation rotation)
 		{
-			const int minimum = -4;
-			const int maximum = 4;
+			if (rotation < Rotation.FullLeft)
+				TargetRotation = Rotation.FullLeft;
+			else if (rotation > Rotation.FullRight)
+				TargetRotation = Rotation.FullRight;
+			else
+				TargetRotation = rotation;
+			_ship.SetRotation(TargetRotation);
+		}
 
-			TargetVelocity = Mathf.Clamp(velocity, minimum, maximum);
-			_ship.SetVelocity(TargetVelocity * 10);
+		private void SetVelocity(Velocity velocity)
+		{
+			if (velocity < Velocity.FullBackwards)
+				TargetVelocity = Velocity.FullBackwards;
+			else if (velocity > Velocity.FullForwards)
+				TargetVelocity = Velocity.FullForwards;
+			else
+				TargetVelocity = velocity;
+			_ship.SetVelocity(TargetVelocity);
 		}
 	}
 }

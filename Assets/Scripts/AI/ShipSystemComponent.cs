@@ -40,9 +40,19 @@ namespace Assets.Scripts.AI
 			_unit = GetComponent<UnitComponent>();
 		}
 
-		public void SetVelocity(float velocity)
+		public void SetVelocity(Velocity velocity)
 		{
-			_navigation.SetVelocity(velocity);
+			var velocityMagnitude = Mathf.Abs((int)velocity * 10);
+			var direction = velocity >= Velocity.Stop
+				? transform.forward
+				: -transform.forward;
+
+			_navigation.SetVelocity(direction, velocityMagnitude);
+		}
+
+		public void SetRotation(Rotation rotation)
+		{
+			_navigation.SetRotation((int) rotation * 10);
 		}
 	}
 }

@@ -26,7 +26,6 @@ namespace Assets.Scripts
 			var go = GameObject.Find(name);
 			var component = go.GetComponent<Transform>();
 			_target = component;
-			transform.SetParent(_target);
 		}
 	
 		// Update is called once per frame
@@ -94,8 +93,8 @@ namespace Assets.Scripts
 			);
 
 			//Debug.LogFormat("Camera: direction={0}, radius={1}", direction, _distance);
-		
-			transform.localPosition = _distance*direction;
+			
+			transform.position = _target.position + _distance*direction;
 			transform.LookAt(_target.position);
 		}
 	}
