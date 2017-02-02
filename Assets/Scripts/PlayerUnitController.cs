@@ -31,6 +31,16 @@ namespace Assets.Scripts
 				SetRotation(TargetRotation + 1);
 		}
 
+		public void TurnAround()
+		{
+			_ship.SetTargetDirection(-_ship.WorldTargetDirection);
+		}
+
+		public void StopShip()
+		{
+			_ship.SetVelocity(Velocity.Stop);
+		}
+
 		private void SetRotation(Rotation rotation)
 		{
 			if (rotation < Rotation.FullLeft)
@@ -44,8 +54,8 @@ namespace Assets.Scripts
 
 		private void SetVelocity(Velocity velocity)
 		{
-			if (velocity < Velocity.FullBackwards)
-				TargetVelocity = Velocity.FullBackwards;
+			if (velocity < Velocity.Stop)
+				TargetVelocity = Velocity.Stop;
 			else if (velocity > Velocity.FullForwards)
 				TargetVelocity = Velocity.FullForwards;
 			else

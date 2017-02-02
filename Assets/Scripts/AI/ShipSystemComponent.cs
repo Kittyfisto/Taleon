@@ -33,6 +33,11 @@ namespace Assets.Scripts.AI
 			get { return _navigation.CurrentVelocity; }
 		}
 
+		public Vector3 WorldTargetDirection
+		{
+			get { return _navigation.TargetWorldDirection; }
+		}
+
 		private void Start()
 		{
 			_navigation = GetComponent<NavigationSystemComponent>();
@@ -53,6 +58,11 @@ namespace Assets.Scripts.AI
 		public void SetRotation(Rotation rotation)
 		{
 			_navigation.SetRotation((int) rotation * 10);
+		}
+
+		public void SetTargetDirection(Vector3 worldTargetDirection)
+		{
+			_navigation.SetDirection(worldTargetDirection);
 		}
 	}
 }

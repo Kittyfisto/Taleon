@@ -10,7 +10,12 @@ namespace Assets.Scripts.AI
 		private float _targetVelocity;
 		private float _targetRotation;
 		private EngineSystem _engine;
-		private Vector3 _targetDirection;
+		private Vector3 _targetWorldDirection;
+
+		public Vector3 TargetWorldDirection
+		{
+			get { return _targetWorldDirection; }
+		}
 
 		public Vector3 CurrentVelocity
 		{
@@ -19,7 +24,7 @@ namespace Assets.Scripts.AI
 
 		public void SetVelocity(Vector3 worldDirection, float velocity)
 		{
-			_targetDirection = worldDirection;
+			_targetWorldDirection = worldDirection;
 			_targetVelocity = Mathf.Clamp(velocity, 0, float.MaxValue);
 		}
 
@@ -31,7 +36,7 @@ namespace Assets.Scripts.AI
 		private void Start()
 		{
 			_engine = GetComponentInChildren<EngineSystem>();
-			_targetDirection = transform.forward;
+			_targetWorldDirection = transform.forward;
 		}
 
 		private void Update()
@@ -43,8 +48,8 @@ namespace Assets.Scripts.AI
 		private void ChangeDirection()
 		{
 			var forward = transform.forward;
-			var directionError = Vector3.Angle(_targetDirection, forward);
-			var directionSign = Vector3.Cross(_targetDirection, forward);
+			var directionError = Vector3.Angle(_targetWorldDirection, forward);
+			var directionSign = Vector3.Cross(_targetWorldDirection, forward);
 
 			if (Mathf.Abs(directionError) > 0.01f)
 			{
@@ -60,13 +65,22 @@ namespace Assets.Scripts.AI
 			var error = _targetVelocity - velocity;
 			if (Mathf.Abs(error) > 0.01f)
 			{
-				//var a = _engine.MaximumAcceleration;
-				//_engine.Burn(Mathf.Sign(error) * a);
+				var a = _engine.MaximumAcceleration;
+				_engine.Burn(Mathf.Sign(error) * a);
 			}
 			else
 			{
 				_engine.Stop();
 			}
+		}
+
+		public void SetDirection(Vector3 worldTargetDirection)
+		{
+			var length = worldTargetDirection.magnitude;
+			if (length < 0.01)
+				return;
+
+			_targetWorldDirection = worldTargetDirection/length;
 		}
 	}
 }

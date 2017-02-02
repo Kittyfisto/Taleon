@@ -2,8 +2,9 @@
 
 namespace Assets.Scripts
 {
-	public class RTSController : MonoBehaviour {
-
+	public class RtsController
+		: MonoBehaviour
+	{
 		const float MinimumYAngle = Mathf.Deg2Rad * 20;
 		const float MaximumYAngle = Mathf.Deg2Rad * 160;
 

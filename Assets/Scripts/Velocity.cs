@@ -2,10 +2,10 @@
 {
 	public enum Velocity
 	{
-		FullBackwards = -2,
-		HalfBackwards = -1,
 		Stop = 0,
-		HalfForwards = 1,
-		FullForwards = 2
+		QuarterForwards = 1,
+		HalfForwards = 2,
+		ThreeQuarterForwards = 3,
+		FullForwards = 4
 	}
 }
