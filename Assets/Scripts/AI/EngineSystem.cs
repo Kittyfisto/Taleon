@@ -61,7 +61,7 @@ namespace Assets.Scripts.AI
 		/// <summary>
 		/// 10 deg/s
 		/// </summary>
-		public float MaximumAngularVelocity = 10;
+		public float MaximumAngularAcceleration = 10;
 
 		private Vector3 _velocity;
 
@@ -121,16 +121,18 @@ namespace Assets.Scripts.AI
 
 			var currentVelocity = Mathf.Rad2Deg * Vector3.Project(_body.angularVelocity, axis).magnitude;
 
-			var change = Mathf.Clamp(MaximumAngularVelocity * Time.deltaTime, 0, angle);
+			var change = Mathf.Clamp(MaximumAngularAcceleration, 0, angle);
 			var torque = axis * change;
 
+			// r = vt + at²
+
 			var timeToTarget = angle / currentVelocity;
-			var timeToZero = currentVelocity / MaximumAngularVelocity;
+			var timeToZero = currentVelocity / MaximumAngularAcceleration;
 
 			if (timeToZero > timeToTarget)
 			{
 				// Slow down
-				torque *= -1;
+				torque *= -1.1f;
 			}
 			else
 			{
@@ -148,7 +150,7 @@ namespace Assets.Scripts.AI
 				return;
 
 			var sign = direction == RotationDirection.Left ? 1 : -1;
-			var angularChange = sign * MaximumAngularVelocity * Time.deltaTime;
+			var angularChange = sign * MaximumAngularAcceleration * Time.deltaTime;
 			transform.Rotate(Vector3.forward, angularChange, Space.Self);
 		}
 	}
