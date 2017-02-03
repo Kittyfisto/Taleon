@@ -77,7 +77,7 @@ namespace Assets.Scripts.AI
 					_isFiringMainEngine = true;
 					break;
 
-				case EngineType.BackwardsThrusters:
+				case EngineType.Thrusters:
 					maximumAcceleration = 2;
 					break;
 

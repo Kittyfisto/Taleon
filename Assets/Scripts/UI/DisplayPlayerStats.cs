@@ -4,12 +4,11 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-	public class DisplayPlayerVelocity
+	public class DisplayPlayerStats
 		: MonoBehaviour
 	{
 		private GameObject _playership;
 		private Text _currentVelocity;
-		private Text _targetVelocity;
 		private PlayerUnitController _playerUnitController;
 		private NavigationSystemComponent _navigation;
 
@@ -21,7 +20,6 @@ namespace Assets.Scripts.UI
 			_playership = _playerUnitController.gameObject;
 
 			_currentVelocity = transform.Find("CurrentVelocityValue").GetComponent<Text>();
-			_targetVelocity = transform.Find("TargetVelocityValue").GetComponent<Text>();
 		}
 
 		// Update is called once per frame
