@@ -113,6 +113,12 @@ namespace Assets.Scripts.AI
 			var current = transform.forward;
 			//var delta = targetDirection - current;
 			var axis = Vector3.Cross(current, targetDirection);
+			if (angle > 170)
+			{
+				// Let's provide some initial kick...
+				axis = transform.right*2;
+			}
+
 			var currentVelocity = Mathf.Rad2Deg * Vector3.Project(_body.angularVelocity, axis).magnitude;
 
 			var change = Mathf.Clamp(MaximumAngularVelocity * Time.deltaTime, 0, angle);
