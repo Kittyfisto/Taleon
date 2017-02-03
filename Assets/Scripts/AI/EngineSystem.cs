@@ -10,19 +10,70 @@ namespace Assets.Scripts.AI
 
 		private Rigidbody _body;
 		private bool _isFiringMainEngine;
+
+		private bool _fireThrustersForLateralMovement;
+		private Vector3 _lateralThrusterDirection;
+
+		private bool _fireThrustersForRotation;
+		private bool _fireThrustersForOrientation;
+
+		/// <summary>
+		/// The axis we're rotating around, if any.
+		/// </summary>
+		private Vector3 _rotationAxis;
+
+		private RotationHint _currentRotation;
+
+		enum RotationHint
+		{
+			None,
+			SpeedingUp,
+			SlowingDown,
+		}
+
 		private float _angularVelocity;
+		private Vector3 _velocity;
+		private ThrusterComponent[] _thrusters;
 
 		// Use this for initialization
 		private void Start()
 		{
 			_engine = transform.FindChild("Engine").gameObject;
 			_body = GetComponent<Rigidbody>();
+			_thrusters = GetComponentsInChildren<ThrusterComponent>();
 		}
 
 		// Update is called once per frame
 		private void Update()
 		{
 			_velocity = _body.velocity;
+			_engine.SetActive(_isFiringMainEngine);
+
+			foreach (var thruster in _thrusters)
+			{
+				thruster.Fire(CalculateFireStrength(thruster));
+			}
+
+			_fireThrustersForOrientation = false;
+			_fireThrustersForRotation = false;
+			_currentRotation = RotationHint.None;
+		}
+
+		private float CalculateFireStrength(ThrusterComponent thruster)
+		{
+			if (_fireThrustersForOrientation)
+			{
+				// TODO: Implement
+				return 0;
+			}
+
+			if (_fireThrustersForLateralMovement)
+			{
+				var dot = Vector3.Dot(-_lateralThrusterDirection, thruster.transform.forward);
+				return dot;
+			}
+
+			return 0;
 		}
 
 		public bool IsFiringMainEngine
@@ -63,7 +114,6 @@ namespace Assets.Scripts.AI
 		/// </summary>
 		public float MaximumAngularAcceleration = 10;
 
-		private Vector3 _velocity;
 
 		public void Burn(EngineType engineType, Vector3 worldDirection, float deltaVelocity)
 		{
@@ -79,6 +129,13 @@ namespace Assets.Scripts.AI
 
 				case EngineType.Thrusters:
 					maximumAcceleration = 2;
+					_lateralThrusterDirection = worldDirection;
+					// We're constantly applying some lateral thrust to stay in play so
+					// we only show that thrusters are firing when the thrust is big enough...
+					if (deltaVelocity > 1)
+					{
+						_fireThrustersForLateralMovement = true;
+					}
 					break;
 
 				default:
@@ -89,19 +146,19 @@ namespace Assets.Scripts.AI
 			float currentAcceleration = Mathf.Clamp(requiredAcceleration, 0, maximumAcceleration);
 			var force = worldDirection * currentAcceleration;
 			_body.AddForce(force);
-
-			UpdateEngine();
 		}
 
-		public void Stop()
+		public void Stop(EngineType type)
 		{
-			_isFiringMainEngine = false;
-			UpdateEngine();
-		}
-
-		private void UpdateEngine()
-		{
-			_engine.SetActive(_isFiringMainEngine);
+			switch (type)
+			{
+				case EngineType.Main:
+					_isFiringMainEngine = false;
+					break;
+				case EngineType.Thrusters:
+					_fireThrustersForLateralMovement = false;
+					break;
+			}
 		}
 
 		/// <summary>
@@ -112,17 +169,17 @@ namespace Assets.Scripts.AI
 		{
 			var current = transform.forward;
 			//var delta = targetDirection - current;
-			var axis = Vector3.Cross(current, targetDirection);
+			_rotationAxis = Vector3.Cross(current, targetDirection);
 			if (angle > 170)
 			{
 				// Let's provide some initial kick...
-				axis = transform.right*2;
+				_rotationAxis = transform.right*2;
 			}
 
-			var currentVelocity = Mathf.Rad2Deg * Vector3.Project(_body.angularVelocity, axis).magnitude;
+			var currentVelocity = Mathf.Rad2Deg * Vector3.Project(_body.angularVelocity, _rotationAxis).magnitude;
 
 			var change = Mathf.Clamp(MaximumAngularAcceleration, 0, angle);
-			var torque = axis * change;
+			var torque = _rotationAxis * change;
 
 			// r = vt + at²
 
@@ -131,17 +188,24 @@ namespace Assets.Scripts.AI
 
 			if (timeToZero > timeToTarget)
 			{
-				// Slow down
 				torque *= -1.1f;
+				_currentRotation = RotationHint.SlowingDown;
 			}
 			else
 			{
-				// Slow up
+				_currentRotation = RotationHint.SpeedingUp;
 			}
 
 			Debug.DrawRay(transform.position, torque, Color.cyan);
 
 			_body.AddTorque(torque);
+
+			// We're constantly orienting ourselves, so in order to not show the thrusters
+			// as always on, we do so until the angular error is small enough
+			if (angle > 3)
+			{
+				_fireThrustersForOrientation = true;
+			}
 		}
 
 		public void RotateShip(RotationDirection direction)
@@ -152,6 +216,8 @@ namespace Assets.Scripts.AI
 			var sign = direction == RotationDirection.Left ? 1 : -1;
 			var angularChange = sign * MaximumAngularAcceleration * Time.deltaTime;
 			transform.Rotate(Vector3.forward, angularChange, Space.Self);
+
+			_fireThrustersForRotation = true;
 		}
 	}
 }

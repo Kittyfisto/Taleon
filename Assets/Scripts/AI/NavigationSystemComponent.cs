@@ -11,6 +11,7 @@ namespace Assets.Scripts.AI
 		private EngineSystem _engine;
 		private bool _facingInTargetDirection;
 		private bool _movingInTargetDirection;
+		private bool _movingInOppositeTargetDirection;
 
 		private Vector3 _targetWorldForward;
 		private float _orientationError;
@@ -81,6 +82,7 @@ namespace Assets.Scripts.AI
 		{
 			var directionError = Vector3.Angle(_targetWorldForward, MovementDirection);
 			_movingInTargetDirection = Mathf.Abs(directionError) < 5f;
+			_movingInOppositeTargetDirection = directionError > 170;
 
 			var currentVelocity = _engine.CurrentVelocity;
 			var currentVelocityMagnitude = currentVelocity.magnitude;
@@ -97,6 +99,10 @@ namespace Assets.Scripts.AI
 			{
 				_engine.Burn(EngineType.Thrusters, velocityErrorDirection, absoluteVelocityError);
 			}
+			else
+			{
+				_engine.Stop(EngineType.Thrusters);
+			}
 
 			if (pointingInCorrectDirection && absoluteVelocityError > 0.01f)
 			{
@@ -104,21 +110,19 @@ namespace Assets.Scripts.AI
 				{
 					_engine.Burn(EngineType.Main, _targetWorldForward, absoluteVelocityError);
 				}
-				else if (!_movingInTargetDirection)
+				else if (_movingInOppositeTargetDirection)
 				{
 					_engine.Burn(EngineType.Main, _targetWorldForward, absoluteVelocityError);
 				}
 				else
 				{
-					_engine.Stop();
+					_engine.Stop(EngineType.Main);
 				}
 			}
 			else
 			{
-				_engine.Stop();
+				_engine.Stop(EngineType.Main);
 			}
-
-			
 		}
 
 		public void SetDirection(Vector3 worldTargetDirection)
