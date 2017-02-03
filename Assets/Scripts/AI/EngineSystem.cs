@@ -65,23 +65,20 @@ namespace Assets.Scripts.AI
 
 		private Vector3 _velocity;
 
-		public void Burn(EngineType engineType, float deltaVelocity)
+		public void Burn(EngineType engineType, Vector3 worldDirection, float deltaVelocity)
 		{
 			var requiredAcceleration = deltaVelocity / Time.deltaTime;
 			float maximumAcceleration;
-			Vector3 direction;
 
 			switch (engineType)
 			{
 				case EngineType.Main:
 					maximumAcceleration = MaximumAcceleration;
-					direction = transform.forward;
 					_isFiringMainEngine = true;
 					break;
 
 				case EngineType.BackwardsThrusters:
 					maximumAcceleration = 2;
-					direction = -transform.forward;
 					break;
 
 				default:
@@ -90,7 +87,7 @@ namespace Assets.Scripts.AI
 			}
 
 			float currentAcceleration = Mathf.Clamp(requiredAcceleration, 0, maximumAcceleration);
-			var force = direction * currentAcceleration;
+			var force = worldDirection * currentAcceleration;
 			_body.AddForce(force);
 
 			UpdateEngine();

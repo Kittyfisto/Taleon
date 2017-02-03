@@ -13,6 +13,7 @@ namespace Assets.Scripts.AI
 		private bool _movingInTargetDirection;
 
 		private Vector3 _targetWorldForward;
+		private float _orientationError;
 
 		public Vector3 TargetWorldForward
 		{
@@ -63,11 +64,11 @@ namespace Assets.Scripts.AI
 		private void ChangeDirection()
 		{
 			var forward = transform.forward;
-			var directionError = Vector3.Angle(_targetWorldForward, forward);
+			_orientationError = Vector3.Angle(_targetWorldForward, forward);
 
-			if (Mathf.Abs(directionError) > 1f)
+			if (Mathf.Abs(_orientationError) > 0.1f)
 			{
-				_engine.OrientShipTowards(_targetWorldForward, directionError);
+				_engine.OrientShipTowards(_targetWorldForward, _orientationError);
 				_facingInTargetDirection = false;
 			}
 			else
@@ -79,23 +80,23 @@ namespace Assets.Scripts.AI
 		private void ChangeVelocity()
 		{
 			var directionError = Vector3.Angle(_targetWorldForward, MovementDirection);
-			_movingInTargetDirection = Mathf.Abs(directionError) < 1f;
+			_movingInTargetDirection = Mathf.Abs(directionError) < 5f;
 
 			var velocity = _engine.CurrentVelocity.magnitude;
 			var deltaVelocity = _targetVelocity - velocity;
 			var velocityError = Mathf.Abs(deltaVelocity);
 
-			if (_facingInTargetDirection && velocityError > 0.01f)
+			if (Mathf.Abs(_orientationError) < 5 && velocityError > 0.01f)
 			{
 				if (deltaVelocity > 0 || !_movingInTargetDirection)
 				{
 					// Are we slower than intended? => burn the main engines
-					_engine.Burn(EngineType.Main, velocityError);
+					_engine.Burn(EngineType.Main, _targetWorldForward, velocityError);
 				}
 				else
 				{
 					// We're slightly faster than we intend to
-					_engine.Burn(EngineType.BackwardsThrusters, velocityError);
+					_engine.Burn(EngineType.BackwardsThrusters, -_targetWorldForward, velocityError);
 				}
 			}
 			else
