@@ -82,36 +82,43 @@ namespace Assets.Scripts.AI
 			var directionError = Vector3.Angle(_targetWorldForward, MovementDirection);
 			_movingInTargetDirection = Mathf.Abs(directionError) < 5f;
 
-			var velocity = _engine.CurrentVelocity.magnitude;
-			var deltaVelocity = _targetVelocity - velocity;
-			var velocityError = Mathf.Abs(deltaVelocity);
+			var currentVelocity = _engine.CurrentVelocity;
+			var currentVelocityMagnitude = currentVelocity.magnitude;
+			var signedVelocityErrorMagnitude = _targetVelocity - currentVelocityMagnitude;
+
+			var requiredVelocity = _targetWorldForward * _targetVelocity;
+			var velocityError = requiredVelocity - currentVelocity;
+			var velocityErrorMagnitude = velocityError.magnitude;
+			var velocityErrorDirection = velocityError / velocityErrorMagnitude;
+			var absoluteVelocityError = Mathf.Abs(velocityErrorMagnitude);
 			bool pointingInCorrectDirection = Mathf.Abs(_orientationError) < 5;
 
-			Vector3 movementError;
-			if ((_targetWorldForward - MovementDirection).TryGetNormalized(0.1f, out movementError))
+			if (velocityErrorMagnitude > 0.01f)
 			{
-				// We're not moving in the right direction and need to perform a lateral burn
-				_engine.Burn(EngineType.Thrusters, movementError, velocityError);
+				_engine.Burn(EngineType.Thrusters, velocityErrorDirection, absoluteVelocityError);
 			}
-			else
+
+			if (pointingInCorrectDirection && absoluteVelocityError > 0.01f)
 			{
-				if (pointingInCorrectDirection && velocityError > 0.01f)
+				if (signedVelocityErrorMagnitude > 0)
 				{
-					if (deltaVelocity > 0 || !_movingInTargetDirection)
-					{
-						// Are we slower than intended? => burn the main engines
-						_engine.Burn(EngineType.Main, _targetWorldForward, velocityError);
-					}
-					else
-					{// We are definately moving in the right direction, but just a little bit too fast.
-						_engine.Burn(EngineType.Thrusters, -_targetWorldForward, velocityError);
-					}
+					_engine.Burn(EngineType.Main, _targetWorldForward, absoluteVelocityError);
+				}
+				else if (!_movingInTargetDirection)
+				{
+					_engine.Burn(EngineType.Main, _targetWorldForward, absoluteVelocityError);
 				}
 				else
 				{
 					_engine.Stop();
 				}
 			}
+			else
+			{
+				_engine.Stop();
+			}
+
+			
 		}
 
 		public void SetDirection(Vector3 worldTargetDirection)
