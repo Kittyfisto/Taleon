@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.AI
 {
+	/// <summary>
+	///     Responsible for controlling both visual and auditory effect that represent this thruster to the user.
+	///     Enables / disables them accordingly.
+	/// </summary>
 	public class ThrusterComponent : MonoBehaviour
 	{
 		private ParticleSystem _effect;
@@ -15,12 +19,6 @@ namespace Assets.Scripts
 			_effect = GetComponentInChildren<ParticleSystem>();
 			_maximumRate = _effect.emission.rateOverTimeMultiplier;
 			_emission = _effect.emission;
-			_effect.Stop();
-		}
-
-		// Update is called once per frame
-		private void Update()
-		{
 		}
 
 		public void Fire(float strength)
