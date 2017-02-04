@@ -9,6 +9,8 @@ namespace Assets.Scripts.UI
 		private RadarSystem _radar;
 
 		public Texture ShipIcon;
+		public Texture FriendlyRocketIcon;
+		public Texture NeutralRocketIcon;
 		public Texture EnemyRocketIcon;
 
 		// Use this for initialization
@@ -32,13 +34,31 @@ namespace Assets.Scripts.UI
 				}
 			}
 
-			foreach (var rocket in _radar.RocketContacts)
+			foreach (var contact in _radar.RocketContacts)
 			{
 				Vector2 position;
-				if (IsVisible(camera, rocket, out position))
+				if (IsVisible(camera, contact.Rocket, out position))
 				{
-					DrawIcon(position, EnemyRocketIcon);
+					DrawIcon(position, GetClassificationIcon(contact));
 				}
+			}
+		}
+
+		private Texture GetClassificationIcon(RocketContact rocket)
+		{
+			switch (rocket.Classification)
+			{
+				case RocketClassification.Enemy:
+					return EnemyRocketIcon;
+
+				case RocketClassification.Neutral:
+					return NeutralRocketIcon;
+
+				case RocketClassification.Friendly:
+					return FriendlyRocketIcon;
+
+				default:
+					return null;
 			}
 		}
 
@@ -53,7 +73,7 @@ namespace Assets.Scripts.UI
 			var rect = new Rect(center, new Vector2(shipIcon.width, shipIcon.height));
 			GUI.DrawTexture(rect, shipIcon);
 		}
-
+		
 		private static bool IsVisible(Camera camera, MonoBehaviour target, out Vector2 position)
 		{
 			position = Vector2.zero;

@@ -9,17 +9,19 @@ namespace Assets.Scripts.AI
 	///     Performs a preliminary categorization of those contacts and primarily offers them to other ship system,
 	///     for example the <see cref="FireControlSystemComponent" />.
 	/// </summary>
+	[RequireComponent(typeof(FactionComponent))]
 	public sealed class RadarSystem
 		: MonoBehaviour
 	{
-		private readonly List<RocketComponent> _rocketContacts;
+		private readonly List<RocketContact> _rocketContacts;
 		private readonly List<ShipSystemComponent> _ships;
 
 		public float Radius;
+		private Faction _faction;
 
 		public RadarSystem()
 		{
-			_rocketContacts = new List<RocketComponent>();
+			_rocketContacts = new List<RocketContact>();
 			_ships = new List<ShipSystemComponent>();
 		}
 
@@ -28,9 +30,14 @@ namespace Assets.Scripts.AI
 			get { return _ships; }
 		}
 
-		public IEnumerable<RocketComponent> RocketContacts
+		public IEnumerable<RocketContact> RocketContacts
 		{
 			get { return _rocketContacts; }
+		}
+
+		private void Start()
+		{
+			_faction = GetComponent<FactionComponent>().Faction;
 		}
 
 		private void Update()
@@ -53,7 +60,7 @@ namespace Assets.Scripts.AI
 				var rocket = possibleContact.GetComponent<RocketComponent>();
 				if (rocket != null)
 				{
-					_rocketContacts.Add(rocket);
+					_rocketContacts.Add(CreateContact(rocket));
 				}
 				else
 				{
@@ -62,6 +69,26 @@ namespace Assets.Scripts.AI
 						_ships.Add(ship);
 				}
 			}
+		}
+
+		private RocketContact CreateContact(RocketComponent rocket)
+		{
+			var classification = Classify(rocket);
+			return new RocketContact(rocket, classification);
+		}
+
+		private RocketClassification Classify(RocketComponent rocket)
+		{
+			var target = rocket.target;
+			var tmp = target.GetComponent<FactionComponent>();
+			if (tmp == null)
+				return RocketClassification.Neutral;
+
+			var targetFaction = tmp.Faction;
+			if (targetFaction == _faction)
+				return RocketClassification.Enemy;
+
+			return RocketClassification.Friendly;
 		}
 	}
 }
