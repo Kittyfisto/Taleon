@@ -13,6 +13,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 	{
 		private AudioSource _audioSource;
 		private bool _isShooting;
+		private float _playing;
 
 		public PointDefenseTurretComponent()
 		{
@@ -29,14 +30,7 @@ namespace Assets.Scripts.AI.FCS.PDS
 			get { return _isShooting; }
 			set
 			{
-				if (value == _isShooting)
-					return;
-
 				_isShooting = value;
-				if (value)
-					_audioSource.Play();
-				else
-					_audioSource.Stop();
 			}
 		}
 
@@ -71,6 +65,25 @@ namespace Assets.Scripts.AI.FCS.PDS
 			else
 			{
 				IsShooting = false;
+			}
+
+
+			if (IsShooting)
+			{
+				if (!_audioSource.isPlaying)
+				{
+					_audioSource.Play();
+					_playing = 0;
+				}
+				else
+				{
+					_playing += Time.deltaTime;
+				}
+			}
+			else
+			{
+				if (_playing > 0.5f)
+					_audioSource.Stop();
 			}
 		}
 	}
