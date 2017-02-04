@@ -19,7 +19,7 @@ namespace Assets.Scripts.AI
 		private Rigidbody _body;
 
 		private RotationHint _currentRotation;
-		private EngineComponent _engine;
+		private EngineComponent[] _mainEngines;
 
 		private bool _fireThrustersForLateralMovement;
 		private bool _fireThrustersForOrientation;
@@ -70,7 +70,7 @@ namespace Assets.Scripts.AI
 		private void Start()
 		{
 			_body = GetComponent<Rigidbody>();
-			_engine = GetComponentInChildren<EngineComponent>();
+			_mainEngines = GetComponentsInChildren<EngineComponent>();
 			_thrusters = GetComponentsInChildren<ThrusterComponent>();
 		}
 
@@ -78,7 +78,8 @@ namespace Assets.Scripts.AI
 		private void Update()
 		{
 			CurrentVelocity = _body.velocity;
-			_engine.Fire(IsFiringMainEngine);
+			foreach(var engine in _mainEngines)
+				engine.Fire(IsFiringMainEngine);
 
 			foreach (var thruster in _thrusters)
 				thruster.Fire(CalculateFireStrength(thruster));

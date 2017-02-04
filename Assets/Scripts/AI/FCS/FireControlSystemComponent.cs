@@ -11,14 +11,16 @@ namespace Assets.Scripts.AI.FCS
 	/// - Rockets, debris, etc.. is reported to the point defense system
 	/// - 
 	/// </summary>
-	[RequireComponent(typeof(PointDefenseSystemComponent))]
+	[RequireComponent(typeof(PointDefenseSystemComponent), typeof(RadarSystem))]
 	public sealed class FireControlSystemComponent : MonoBehaviour
 	{
 		private PointDefenseSystemComponent _pds;
+		private RadarSystem _radar;
 
 		private void Start()
 		{
 			_pds = GetComponent<PointDefenseSystemComponent>();
+			_radar = GetComponent<RadarSystem>();
 		}
 
 		private void Update()

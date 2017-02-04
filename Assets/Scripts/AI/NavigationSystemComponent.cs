@@ -5,6 +5,7 @@ namespace Assets.Scripts.AI
 	/// <summary>
 	///     Responsible for actually controlling the engine(s) of the ship.
 	/// </summary>
+	[RequireComponent(typeof(EngineSystem))]
 	public class NavigationSystemComponent : MonoBehaviour
 	{
 		private float _targetVelocity;
