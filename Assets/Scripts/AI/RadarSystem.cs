@@ -46,7 +46,9 @@ namespace Assets.Scripts.AI
 				// By design, all important ship systems are part of the root game object and therefore we
 				// first have to travel to the root before finding those components:
 				var root = collider.transform.root;
-				var possibleContact = root != null ? (Component) root : collider;
+				var possibleContact = (root != null ? (Component) root : collider).gameObject;
+				if (ReferenceEquals(gameObject, possibleContact))
+					continue;
 
 				var rocket = possibleContact.GetComponent<RocketComponent>();
 				if (rocket != null)
