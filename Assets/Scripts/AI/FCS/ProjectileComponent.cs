@@ -54,7 +54,7 @@ namespace Assets.Scripts.AI.FCS
 		{
 			OnHit(other.gameObject);
 		}
-
+	
 		protected virtual void OnHit(GameObject otherGameObject)
 		{
 			if (otherGameObject != null)
