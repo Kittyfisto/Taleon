@@ -42,11 +42,18 @@ namespace Assets.Scripts.AI.FCS
 
 		protected override FiringSolution? FindFiringSolution(GameObject target)
 		{
+			var targetPosition = target.transform.position;
+			var delta = targetPosition - transform.position;
+			if (delta == Vector3.zero)
+				return null;
+
+			var direction = delta.normalized;
+
 			return new FiringSolution
 			{
-				FiringDirection = new Vector3(1, 0, 0),
+				FiringDirection = direction,
 				InterceptionDistance = float.MaxValue,
-				TargetPosition = target.transform.position
+				TargetPosition = targetPosition
 			};
 		}
 	}
