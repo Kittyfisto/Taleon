@@ -79,7 +79,7 @@ namespace Assets.Scripts.AI
 
 		private RocketClassification Classify(RocketComponent rocket)
 		{
-			var target = rocket.target;
+			var target = rocket.Target;
 			var tmp = target.GetComponent<FactionComponent>();
 			if (tmp == null)
 				return RocketClassification.Neutral;

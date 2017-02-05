@@ -56,7 +56,8 @@ namespace Assets.Scripts.AI.FCS
 			get { return _isActivated; }
 		}
 
-		public GameObject target;
+		public GameObject Target;
+
 		private bool _isActivated;
 		private Collider _collider;
 		private GameObject _engine;
@@ -76,7 +77,7 @@ namespace Assets.Scripts.AI.FCS
 			var total = initial + AdditionalVelocity;
 
 			_body.velocity = total;
-			_lastDistance = Vector3.Distance(transform.position, target.transform.position);
+			_lastDistance = Vector3.Distance(transform.position, Target.transform.position);
 		}
 
 		// Update is called once per frame
@@ -94,7 +95,7 @@ namespace Assets.Scripts.AI.FCS
 			var direction = CalculateEngineSolution(out targetDirection, out acceleration);
 			if (_isActivated)
 			{
-				if (_lifeTime < Burntime && target != null)
+				if (_lifeTime < Burntime && Target != null)
 				{
 					BurnEngine(direction);
 					
@@ -136,7 +137,7 @@ namespace Assets.Scripts.AI.FCS
 
 		private Vector3 CalculateEngineSolution(out Vector3 targetDirection, out float acceleration)
 		{
-			if (target == null)
+			if (Target == null)
 			{
 				targetDirection = Vector3.zero;
 				acceleration = 0;
@@ -144,7 +145,7 @@ namespace Assets.Scripts.AI.FCS
 			}
 
 			// TODO: Find projected position of target based on its current acceleration
-			var delta = target.transform.position - transform.position;
+			var delta = Target.transform.position - transform.position;
 			targetDirection = delta.normalized;
 
 			// When the movement direction of this rocket does not align with the direction to the target,

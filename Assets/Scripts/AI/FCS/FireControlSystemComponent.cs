@@ -53,7 +53,7 @@ namespace Assets.Scripts.AI.FCS
 			if (!rocket.IsActivated)
 				return false;
 
-			if (rocket.target != gameObject)
+			if (rocket.Target != gameObject)
 				return false;
 
 			if (!FliesTowardsUs(rocket))

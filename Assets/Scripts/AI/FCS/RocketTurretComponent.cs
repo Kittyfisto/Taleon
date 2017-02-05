@@ -42,7 +42,7 @@ namespace Assets.Scripts.AI.FCS
 			go.transform.position = transform.position;
 			go.transform.forward = transform.forward;
 			var rocket = go.GetComponent<RocketComponent>();
-			rocket.target = target;
+			rocket.Target = target;
 
 			if (_ship != null)
 				rocket.AdditionalVelocity = _ship.CurrentVelocity;
