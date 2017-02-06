@@ -1,0 +1,8 @@
+- Serious colonization started after Mars
+- Only used for mining H3
+- Most colonists are involved in the mining operation
+- Secondary industries spawned once the moon was populated enough
+- There are a few research outputs
+- Depends on imports from Mars (basic necessities) and Earth (high tech)
+
+Total population: Less than a million
