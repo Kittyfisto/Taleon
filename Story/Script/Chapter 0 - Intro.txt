@@ -1,0 +1,35 @@
+A space station is shown, orbiting a moon (Titan) of Jupiter is shown.
+
+<Insert radio chatter>
+
+Cut to inside of station.
+We see a ship inside a hangar.
+
+It looks like the ship was in maintenance.
+
+We see personel leaving the hangar.
+Docking clamps are released.
+The hangar door opens.
+
+Captian: "This is <Ship Name>. Requesting permission for take off"
+Station: "This is <Nestor Station>. Roger <Ship Name>, you are cleared for take off. Godspeed."
+
+The ship's reactors come alive.
+Lights go on, the engine starts to spool (but isn't fired inside the station!).
+The ship's RCS thrusters rotate the ship around and move it outside the station.
+
+The ship slowly drifts away from the station.
+
+We see sections of the station crossing paths with the ship as it drifts away.
+A tanker from the surface of Titan is proceding to dock.
+Another (interplanetary) tanker is leaving the Jupiter System for the inner colonies.
+
+Captian: "XO, Set course to intercept the <Sister Ship Name>. We will support her in patrolling LTO."
+XO: "Aye Aye, Cpt."
+
+<The player has to input the course to intercept <Sister Ship Name>>
+
+We see the ship's main engine firing up, slowly accelerating the ship.
+We look back at <Nestor Station>, getting smaller and smaller.
+
+<End Chapter>
