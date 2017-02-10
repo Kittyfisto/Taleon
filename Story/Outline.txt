@@ -1,0 +1,7 @@
+The player is the XO (second in command) on the space ship <Ship Name>.
+As such, the player has to implement the captians orders, such as: Move to X,
+increase velocity to Y or attack Z.
+
+This helps the player to learn the game, without having to do everything a once.
+After one or two missions, the player should be proficient enough to give out orders and
+thus the captian has to die.
