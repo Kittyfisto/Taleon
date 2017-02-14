@@ -1,3 +1,8 @@
+Key points:
+- Player is employee to a large and mighty corporation, executing officer to a small patrol ship
+- Player isn't in command of the ship, initially
+- Captian dies after the player is familiar enough with controls
+
 The player is the XO (second in command) on the space ship <Ship Name>.
 As such, the player has to implement the captians orders, such as: Move to X,
 increase velocity to Y or attack Z.
