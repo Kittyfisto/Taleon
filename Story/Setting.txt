@@ -1,20 +1,59 @@
-Several bodies of the solar system are inhabited.
-Earth is (still) inhabited, most of humanity lives there.
-Almost 500 million people live on the moon.
-Mars is fully colonized (i.e. green).
+Colonies:
 
 We're in the 23rd century. (Is this reasonable?)
-
+Humanity has become a multiplanetary species and has settled all over the solar system.
+Earth is (still) inhabited, most of humanity lives there.
+The moon contains several cities.
+Mars has been partially terraformed and is no longer "the red planet".
 Humany has established remote outposts in most corners of the system:
 The great belt, Jupiter, Saturn Uranus and Neptune feature a lot of space cities.
 
-On old earth, countries still exist, however corporations have most of the power.
-Space is colonized only by the most powerful countries and corporations alike.
 
-(China is the most prominent power).
+Political situation:
 
-
-Obviously space is militarized, however there hasn't been much conflict in the last (xxx).
+Space has been colonized both by nations and corporations (or groups thereof) alike.
+There have been conflicts in the past, however these are pretty peaceful times.
+The powers that be are engaged in a struggle that equals one we've seen in the 21st century:
+Like minded groups have formed alliances and use their political and economocial leverage
+to advance their cause (which usually means, increase their profit).
+There has been the odd or so armed conflict between adversarial factions, however they usually lasted
+only one or two battles before either force was too depleted to continue.
 
 (Maybe there should be some sort of Washington Treaty that limits the maximum mass of battleships.
 One faction could start to breakt it to start the conflict that is featured in the game).
+
+
+Society:
+
+Society on earth has changed drastically: Most people no longer work for a living, this has been
+moved to thinking machines, robots and computer programs. Instead, there is a basic universal income
+that allows people shelter, food and health. There still are tasks that are performed by actual humans,
+such as Teachers (for those rich individuals that prefer a human instead of an Android), Artists, Engineers
+and most importantly, the upper levels of any corporation or state/military.
+
+This differs from the smaller colonies where human labour is less expensive than automated labour (It boils
+down to the fact that automated labour has a higher maintenance cost due to the amount of required high-tech
+materials, which must be imported from Earth, and skilled workers required to perform maintenance).
+These colonies are mostly (99%) worked by humans. Those that are run by Corporations are run almost eclusively
+by employees and contractors.
+Usually, the size of a colony scales with its societal freedoms or lack thereof: A colony of a dozen or so people has incredibly
+strict rules and requires total coherence to succeed whereas a colony of 100k people can be more lenient in some
+regards.
+
+
+Why has space been colonized?
+
+Despite hopes to the contrary, most sources of oil on earth have run pretty dry in the
+22nd century. Earth, unable to completely move away from oil, turned to Titan, which contained more
+hydrocarbons than earth every did and quickly started to establish an unprecedented mining and processing
+operation to supply earth's never stopping need for the black gold.
+This mining operation, however, had many requirements that needed to be fullfilled. Corporations soon
+found a new source of income in providing these needs at a lower cost than shipping them from earth to space.
+Thus entirely new industries were started in the solar system to provide those needs:
+Food, water, health, entertainment, etc...
+
+On the other hand, many of those that have left earth behind thought of it as a cesspool for the
+self-indulgent masses and sought to build new, better societies where people had to work for a living.
+Due to the limited amount of resources available to colonies, there cannot be any freeloaders. Even moreso,
+colonies were more in line with the older economic models of the 20th century: The harder you work, the greater
+your payday.

@@ -1,0 +1,13 @@
+The player is the XO (second in command) on the space ship <Ship Name>.
+The player's an employee of <Insert Corporation>, specifically part of its so called self defense force.
+The <Insert Corporation> SDF is tasked with maintaing law and order in and around <Insert Corporation> both manned and unmanned stations
+as well as to protect its ships. In short, it ensures that the company remains profitable.
+
+At first, the player is tasked with simple patrolling and escorting missions where he encounteres one or two hostiles, but nothing really dangerous happens.
+The third mission or so is to find a missing science ship that was tasked with evaluating the viability of a mining operation
+in Neptune's Adams ring.
+
+Once there, the player finds the science ship, however it doesn't answer any hails. Upon closing, the ship is shown to have suffered no damage.
+The ship is eventually boarded, however there is no sign of the crew. Nor is there any explanation as to why the crew has vanished.
+On the bridge, the player finds out that the logs have been whiped and the fligth recorder is missing.
+

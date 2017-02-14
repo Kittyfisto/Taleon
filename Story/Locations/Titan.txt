@@ -1,1 +1,11 @@
-Titan
+- In the mid of the 21st century, earth started sending probes, submarines and rovers, targeting titan
+- Their mission: Evaluate titans natural resources, especially oil and other hydrocarbons (http://www.space.com/4968-titan-oil-earth.html)
+- Soon after, a plan to extract those resources was put into place (by who?)
+
+- Now, Titan is a busy moon containing one of the largest industries outside earth
+- Resources are harvested, processed and then sent up to LTO (low titan orbit)
+- From there on, gigantic tankers transport oil and gasses to the rest of the system
+
+- Low titan orbit features gigantic tanks that store resources before they are shipped of
+- There's only as much civilian population as there needs to be for the operator
+- There some research labs on the surface to study the byproducts of the mining operation

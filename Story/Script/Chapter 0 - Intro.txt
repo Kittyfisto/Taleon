@@ -1,0 +1,69 @@
+Chapter 0
+
+OUTLINE
+
+We are introduced to the player's ship, the <Ship Name>. It is currently docked at <Nestor Station>,
+being serviced. The ship is docked in a "dry dock" with it's hangar doors closed. We get to see various close
+ups of the ship and the hangar while the ship is booted up and getting ready to undock.
+The hangar doors open and the ship maneuvers outside the hangar.
+
+After having performed tests on the RCS thrusters, the ship engages its main engines to start testing its
+weapon systems. The test involves launching drones, targeting them and performing simulated combat.
+The point defense system is tested by having the drones fire "blank" missiles at the ship. Finally,
+the primarily offensive weapons are tested against drones.
+
+Once all tests have been performed, the ship reports ready status and is assigned to a high value freighter leaving
+<Nestor Station> for LEO. The ship is tasked to intercept the freighter and protect it all the way to earth.
+
+A few uneventful days pass as both ships intercept an SOS from a freighter of the same corporation.
+They report the distress call to HQ and the player's captain decides to heed the call.
+
+Once the distress call's location is found and intercepted, we find a badly damaged ship as well as lots of debries.
+The ship is circled and it is decided that the player should dock with the remains to salvage whatever information
+they can (there are no magical scanners that do this from afar).
+
+The captain puts together a small crew and proceeds to board the other vessel. Once aboard, a volley of missiles
+is detected that head both for the <Ship Name> as well as the badly damaged vessel. They are too many
+to be fully intercepted by the point defense system and they strike both the wreck as well as the <Ship Name>.
+
+The player, as executive officer, has to take command and defeat the pirate ship that was hiding in the debries field.
+The mission ends once the ship is defeated.
+
+
+SCRIPT
+
+A space station is shown, orbiting a moon (Titan) of Jupiter is shown.
+
+<Insert radio chatter>
+
+Cut to inside of station.
+We see a ship inside a hangar.
+
+It looks like the ship was in maintenance.
+
+We see personel leaving the hangar.
+Docking clamps are released.
+The hangar door opens.
+
+Captian: "This is <Ship Name>. Requesting permission for take off"
+Station: "This is <Nestor Station>. Roger <Ship Name>, you are cleared for take off. Godspeed."
+
+The ship's reactors come alive.
+Lights go on, the engine starts to spool (but isn't fired inside the station!).
+The ship's RCS thrusters rotate the ship around and move it outside the station.
+
+The ship slowly drifts away from the station.
+
+We see sections of the station crossing paths with the ship as it drifts away.
+A tanker from the surface of Titan is proceding to dock.
+Another (interplanetary) tanker is leaving the Jupiter System for the inner colonies.
+
+Captian: "XO, Set course to intercept the <Sister Ship Name>. We will support her in patrolling LTO."
+XO: "Aye Aye, Cpt."
+
+<The player has to input the course to intercept <Sister Ship Name>>
+
+We see the ship's main engine firing up, slowly accelerating the ship.
+We look back at <Nestor Station>, getting smaller and smaller.
+
+<End Chapter>
