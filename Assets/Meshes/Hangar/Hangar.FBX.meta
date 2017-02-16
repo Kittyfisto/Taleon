@@ -1,0 +1,198 @@
+fileFormatVersion: 2
+guid: a9937139423c27c45b17639b91418903
+timeCreated: 1487285135
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Box001
+    100002: Crane
+    100004: Crane Rail
+    100006: Crane Rail2
+    100008: Gangway1
+    100010: Gangway2
+    100012: //RootNode
+    100014: Hangar Walls
+    100016: HangarDoor002
+    100018: HangarDoor1
+    100020: Human Reference
+    100022: ObservationPlatform1
+    100024: Platform001
+    100026: Platform002
+    100028: VerticalStrut002
+    100030: VerticalStrut003
+    100032: VerticalStrut004
+    100034: VerticalStrut005
+    100036: VerticalStrut006
+    100038: VerticalStrut007
+    100040: VerticalStrut008
+    100042: VerticalStrut009
+    100044: VerticalStrut010
+    100046: VerticalStrut011
+    100048: VerticalStrut1
+    400000: Box001
+    400002: Crane
+    400004: Crane Rail
+    400006: Crane Rail2
+    400008: Gangway1
+    400010: Gangway2
+    400012: //RootNode
+    400014: Hangar Walls
+    400016: HangarDoor002
+    400018: HangarDoor1
+    400020: Human Reference
+    400022: ObservationPlatform1
+    400024: Platform001
+    400026: Platform002
+    400028: VerticalStrut002
+    400030: VerticalStrut003
+    400032: VerticalStrut004
+    400034: VerticalStrut005
+    400036: VerticalStrut006
+    400038: VerticalStrut007
+    400040: VerticalStrut008
+    400042: VerticalStrut009
+    400044: VerticalStrut010
+    400046: VerticalStrut011
+    400048: VerticalStrut1
+    2300000: Box001
+    2300002: Crane
+    2300004: Crane Rail
+    2300006: Crane Rail2
+    2300008: Gangway1
+    2300010: Gangway2
+    2300012: Hangar Walls
+    2300014: HangarDoor002
+    2300016: HangarDoor1
+    2300018: Human Reference
+    2300020: ObservationPlatform1
+    2300022: Platform001
+    2300024: Platform002
+    2300026: VerticalStrut002
+    2300028: VerticalStrut003
+    2300030: VerticalStrut004
+    2300032: VerticalStrut005
+    2300034: VerticalStrut006
+    2300036: VerticalStrut007
+    2300038: VerticalStrut008
+    2300040: VerticalStrut009
+    2300042: VerticalStrut010
+    2300044: VerticalStrut011
+    2300046: VerticalStrut1
+    3300000: Box001
+    3300002: Crane
+    3300004: Crane Rail
+    3300006: Crane Rail2
+    3300008: Gangway1
+    3300010: Gangway2
+    3300012: Hangar Walls
+    3300014: HangarDoor002
+    3300016: HangarDoor1
+    3300018: Human Reference
+    3300020: ObservationPlatform1
+    3300022: Platform001
+    3300024: Platform002
+    3300026: VerticalStrut002
+    3300028: VerticalStrut003
+    3300030: VerticalStrut004
+    3300032: VerticalStrut005
+    3300034: VerticalStrut006
+    3300036: VerticalStrut007
+    3300038: VerticalStrut008
+    3300040: VerticalStrut009
+    3300042: VerticalStrut010
+    3300044: VerticalStrut011
+    3300046: VerticalStrut1
+    4300000: Hangar Walls
+    4300002: HangarDoor1
+    4300004: Gangway1
+    4300006: Gangway2
+    4300008: VerticalStrut1
+    4300010: VerticalStrut002
+    4300012: VerticalStrut003
+    4300014: VerticalStrut004
+    4300016: VerticalStrut005
+    4300018: VerticalStrut006
+    4300020: VerticalStrut007
+    4300022: VerticalStrut008
+    4300024: VerticalStrut009
+    4300026: VerticalStrut010
+    4300028: VerticalStrut011
+    4300030: ObservationPlatform1
+    4300032: Human Reference
+    4300034: HangarDoor002
+    4300036: Platform002
+    4300038: Platform001
+    4300040: Box001
+    4300042: Crane
+    4300044: Crane Rail
+    4300046: Crane Rail2
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
