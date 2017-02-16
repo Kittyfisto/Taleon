@@ -7,7 +7,7 @@ namespace Assets.Scripts.UI.MainMenu
 	{
 		public void OnCloseButton()
 		{
-			SceneManager.LoadScene("Chapters/Demo", LoadSceneMode.Additive);
+			SceneManager.LoadScene("Scenes/Chapters/Demo", LoadSceneMode.Single);
 		}
 	}
 }
