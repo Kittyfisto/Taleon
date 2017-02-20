@@ -8,4 +8,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
   - enabled: 1
-    path: Assets/Scenes/Chapters/Demo.unity
+    path: Assets/Scenes/Chapters/Chapter 01 - Intro.unity
