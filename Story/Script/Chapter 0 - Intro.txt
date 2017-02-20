@@ -30,11 +30,11 @@ The player, as executive officer, has to take command and defeat the pirate ship
 The mission ends once the ship is defeated.
 
 
-SCRIPT
+=== BEGIN SCRIPT ===
 
 A space station is shown, orbiting a moon (Titan) of Jupiter is shown.
 
-<Insert radio chatter>
+<Insert background radio chatter>
 
 Cut to inside of station.
 We see a ship inside a hangar.
@@ -45,14 +45,45 @@ We see personel leaving the hangar.
 Docking clamps are released.
 The hangar door opens.
 
-Captian: "This is <Ship Name>. Requesting permission for take off"
-Station: "This is <Nestor Station>. Roger <Ship Name>, you are cleared for take off. Godspeed."
+XO: "That was the last batch. We're fully loaded and ready to fly, ma'am".
+Captian: "Thank you, <insert player name>. Let's go."
 
-The ship's reactors come alive.
-Lights go on, the engine starts to spool (but isn't fired inside the station!).
-The ship's RCS thrusters rotate the ship around and move it outside the station.
+<Cue shipwide "ringtone", see BSG for example>
+Captain, Shipwide: "This is the commander. Man all stations and prepare for immediate undocking."
 
-The ship slowly drifts away from the station.
+Captian: "Coms, request permission to undock."
+Communication Officer: "Aye, aye ma'am."
+
+Communication Officer: "NTC, this is Support Frigate Osiris requesting permission to undock, over."
+Station: "Osiris, this is Nestor Traffic Control, permission granted. Godspeed."
+
+Captian: "Take us out <insert player name>, slow and steady."
+
+Sirens begin to sound and lights go off inside the hangar, presumably to warn anyone still inside the hangar
+that air is about to be vented.
+
+Most personel leave the hangar and doors start to close.
+We can hear a whissing sound from the air being pumped out of space.
+
+The ship's reactors come alive. It's lights go on, but the main engine stays off (and doesn't show any sign).
+
+The hangar lights change color once again (to signal that the doors are about to be opened any second) and a few
+seconds later, the hangar doors start to open (sliding to the side).
+
+The ship's RCS thrusters begin to push to one side while the ship is still connected, so it won't start
+drifting to the side once the connection is severed.
+
+XO: "Release docking clamps."
+Nav: "Releasing docking clamps."
+
+The docking clamps are released and retract to the ceiling.
+
+XO: "Take us out, <insert nav name>."
+Nav: "Yessir."
+
+The forward RCS thrusters are engaged and the ship slowly drifts backwards, outside the hangar.
+We see the ship slowly exiting the hangar, moving away from the station until it is no longer at risk at
+colliding with the rotation parts of it.
 
 We see sections of the station crossing paths with the ship as it drifts away.
 A tanker from the surface of Titan is proceding to dock.
@@ -61,9 +92,15 @@ Another (interplanetary) tanker is leaving the Jupiter System for the inner colo
 Captian: "XO, Set course to intercept the <Sister Ship Name>. We will support her in patrolling LTO."
 XO: "Aye Aye, Cpt."
 
-<The player has to input the course to intercept <Sister Ship Name>>
+=== Start random thoughts ===
+This could be the place for the first interaction of the player, but maybe we'll cut it?
+Discuss!
+=== End random thoughts ===
 
-We see the ship's main engine firing up, slowly accelerating the ship.
-We look back at <Nestor Station>, getting smaller and smaller.
+XO: "<insert nav name> calculate and execute intercept course for <Sister Ship Name>."
+XO: "<insert coms name> hail the <Sister Ship Name> and inform her of our arrival."
 
-<End Chapter>
+The ship's RCS thrusters quickly turn the ship around and we see it's main engine spooling up.
+It fires and <Nestor Station> is quickly left behind.
+
+=== END SCRIPT ===
