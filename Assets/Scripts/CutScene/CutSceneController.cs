@@ -17,6 +17,8 @@ namespace Assets.Scripts.CutScene
 
 		public void Play(DialogLine[] lines)
 		{
+			gameObject.SetActive(true);
+
 			_lines = lines;
 			_currentLineIndex = -1;
 			ShowNextLine();
