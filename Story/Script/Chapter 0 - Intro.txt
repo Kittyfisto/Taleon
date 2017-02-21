@@ -46,12 +46,12 @@ Docking clamps are released.
 The hangar door opens.
 
 XO: "That was the last batch. We're fully loaded and ready to fly, ma'am".
-Captian: "Thank you, <insert player name>. Let's go."
+Captain: "Thank you, <insert player name>. Let's go."
 
 <Cue shipwide "ringtone", see BSG for example>
 Captain, Shipwide: "This is the commander. Man all stations and prepare for immediate undocking."
 
-Captian: "Coms, request permission to undock."
+Captain: "Coms, request permission to undock."
 Communication Officer: "Aye, aye ma'am."
 
 Communication Officer: "NTC, this is Support Frigate Osiris requesting permission to undock, over."
@@ -89,7 +89,7 @@ We see sections of the station crossing paths with the ship as it drifts away.
 A tanker from the surface of Titan is proceding to dock.
 Another (interplanetary) tanker is leaving the Jupiter System for the inner colonies.
 
-Captian: "XO, Set course to intercept the <Sister Ship Name>. We will support her in patrolling LTO."
+Captain: "XO, Set course to intercept the <Sister Ship Name>. We will support her in patrolling LTO."
 XO: "Aye Aye, Cpt."
 
 === Start random thoughts ===
