@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.CutScene
@@ -6,33 +8,38 @@ namespace Assets.Scripts.CutScene
 	public sealed class CutSceneController
 		: MonoBehaviour
 	{
-		private DialogLine[] _lines;
+		private ICutSceneAction[] _lines;
 		private int _currentLineIndex;
 		private float _currentLineElapsed;
+		private float _length;
 
 		/// <summary>
 		/// The text component that shall display the dialog.
 		/// </summary>
 		public Text TextBox;
 
-		public void Play(DialogLine[] lines)
+		public void Play(IEnumerable<ICutSceneAction> actions)
 		{
 			gameObject.SetActive(true);
 
-			_lines = lines;
+			_lines = actions.ToArray();
 			_currentLineIndex = -1;
-			ShowNextLine();
+			_length = _lines.Sum(x => x.Length);
+
+			Debug.LogFormat("Starting cut scene {0}seconds, {1} actions", _length, _lines.Length);
+
+			ExecuteNextAction();
 		}
 
 		private void Update()
 		{
-			var currentLine = GetCurrentLine();
+			var currentLine = GetCurrentAction();
 			if (currentLine == null)
 				return;
 
 			if (_currentLineElapsed > currentLine.Length)
 			{
-				ShowNextLine();
+				ExecuteNextAction();
 			}
 			else
 			{
@@ -40,21 +47,25 @@ namespace Assets.Scripts.CutScene
 			}
 		}
 
-		private void ShowNextLine()
+		private void ExecuteNextAction()
 		{
 			++_currentLineIndex;
 			_currentLineElapsed = 0;
 
-			var currentLine = GetCurrentLine();
-			if (currentLine == null)
+			var currentAction = GetCurrentAction();
+			if (currentAction == null)
 				return;
 
-			Show(currentLine);
+			Execute(currentAction);
 		}
 
-		private void Show(DialogLine currentLine)
+		private void Execute(ICutSceneAction currentAction)
 		{
-			TextBox.text = currentLine.ToString();
+			var dialog = currentAction as DialogAction;
+			if (dialog != null)
+				TextBox.text = dialog.ToString();
+			else
+				TextBox.text = null;
 		}
 
 		public bool IsFinished
@@ -68,7 +79,7 @@ namespace Assets.Scripts.CutScene
 			}
 		}
 
-		private DialogLine GetCurrentLine()
+		private ICutSceneAction GetCurrentAction()
 		{
 			if (IsFinished)
 				return null;
