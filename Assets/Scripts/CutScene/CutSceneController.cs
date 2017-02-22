@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,9 +19,13 @@ namespace Assets.Scripts.CutScene
 		/// </summary>
 		public Text TextBox;
 
+		private QuitGameComponent _quitDialog;
+
 		public void Play(IEnumerable<ICutSceneAction> actions)
 		{
 			gameObject.SetActive(true);
+
+			_quitDialog = FindObjectOfType<QuitGameComponent>();
 
 			_lines = actions.ToArray();
 			_currentLineIndex = -1;
@@ -33,6 +38,10 @@ namespace Assets.Scripts.CutScene
 
 		private void Update()
 		{
+			// We want to pause playback until the quit dialog is closed (again)
+			if (_quitDialog.IsShowingQuitDIalog)
+				return;
+
 			var currentLine = GetCurrentAction();
 			if (currentLine == null)
 				return;

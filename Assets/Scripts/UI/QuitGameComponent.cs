@@ -22,6 +22,14 @@ namespace Assets.Scripts.UI
 			QuitDialog.SetActive(!QuitDialog.activeInHierarchy);
 		}
 
+		public bool IsShowingQuitDIalog
+		{
+			get
+			{
+				return QuitDialog.activeSelf;
+			}
+		}
+
 		public void OnQuit()
 		{
 			SceneManager.LoadScene("Scenes/MainMenu", LoadSceneMode.Single);
