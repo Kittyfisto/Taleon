@@ -1,9 +1,6 @@
 The following list describes all possible ranks of the "Asteros Risk Management" corporation, subsidiary of the
 Asteros Group.
 
-TODO: Discuss whether or not military tradition carried over to this PMC. If it did not, then the names
-for those ranks are properly not appropriate.
-
 Midshipman
 Sub lieutenant
 Lieutenant commander
