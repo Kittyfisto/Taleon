@@ -11,7 +11,7 @@ namespace Assets.Scripts
 	{
 		private ShipSystemComponent _ship;
 
-		public Velocity TargetVelocity;
+		public VelocitySetting TargetVelocity;
 
 		private void Start()
 		{
@@ -46,7 +46,7 @@ namespace Assets.Scripts
 
 		public void StopShip()
 		{
-			SetVelocity(Velocity.Stop);
+			SetVelocity(VelocitySetting.Stop);
 		}
 
 		private void Rotate(RotationDirection direction)
@@ -54,12 +54,12 @@ namespace Assets.Scripts
 			_ship.Rotate(direction);
 		}
 
-		private void SetVelocity(Velocity velocity)
+		private void SetVelocity(VelocitySetting velocity)
 		{
-			if (velocity < Velocity.Stop)
-				TargetVelocity = Velocity.Stop;
-			else if (velocity > Velocity.FullForwards)
-				TargetVelocity = Velocity.FullForwards;
+			if (velocity < VelocitySetting.Stop)
+				TargetVelocity = VelocitySetting.Stop;
+			else if (velocity > VelocitySetting.FullForwards)
+				TargetVelocity = VelocitySetting.FullForwards;
 			else
 				TargetVelocity = velocity;
 			_ship.SetVelocity(TargetVelocity);

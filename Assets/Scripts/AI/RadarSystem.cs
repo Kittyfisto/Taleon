@@ -10,6 +10,7 @@ namespace Assets.Scripts.AI
 	///     for example the <see cref="FireControlSystemComponent" />.
 	/// </summary>
 	[RequireComponent(typeof(FactionComponent))]
+	[RequireComponent(typeof(ShipSystemComponent))]
 	public sealed class RadarSystem
 		: MonoBehaviour
 	{
@@ -19,6 +20,7 @@ namespace Assets.Scripts.AI
 		private Faction _faction;
 
 		public float Radius;
+		private ShipSystemComponent _shipSystem;
 
 		public RadarSystem()
 		{
@@ -55,6 +57,7 @@ namespace Assets.Scripts.AI
 
 		private void Start()
 		{
+			_shipSystem = GetComponent<ShipSystemComponent>();
 			_faction = GetComponent<FactionComponent>().Faction;
 		}
 
@@ -77,7 +80,7 @@ namespace Assets.Scripts.AI
 					continue;
 
 				SensorBlip blip;
-				if (TryCreateRadarBlip(possibleContact, out blip))
+				if (SensorBlip.TryCreate(_shipSystem, possibleContact, out blip))
 				{
 					RocketComponent rocket;
 					ShipSystemComponent ship;
@@ -89,51 +92,6 @@ namespace Assets.Scripts.AI
 						_blips.Add(blip);
 				}
 			}
-		}
-
-		private bool TryCreateRadarBlip(GameObject possibleContact, out SensorBlip blip)
-		{
-			var ship = possibleContact.GetComponent<ShipSystemComponent>();
-			if (ship != null)
-			{
-				var distance = CalculateDistance(possibleContact);
-				var crossSection = CalculateCrossSection(possibleContact);
-				blip = new SensorBlip(ship, distance, crossSection);
-				return true;
-			}
-
-			var rocket = possibleContact.GetComponent<RocketComponent>();
-			if (rocket != null)
-			{
-				var distance = CalculateDistance(possibleContact);
-				var crossSection = CalculateCrossSection(possibleContact);
-				blip = new SensorBlip(rocket, distance, crossSection);
-				return true;
-			}
-
-			blip = new SensorBlip();
-			return false;
-		}
-
-		private Length CalculateDistance(GameObject possibleContact)
-		{
-			var otherTransform = possibleContact.transform;
-			var distance = Vector3.Distance(otherTransform.position, transform.position);
-			// TODO: Introduce jitter
-			return Length.FromUnits(distance);
-		}
-
-		private Length CalculateCrossSection(GameObject possibleContact)
-		{
-			var blipCollider = possibleContact.GetComponentInChildren<Collider>();
-			if (blipCollider == null)
-				return Length.Zero;
-
-			var bb = blipCollider.bounds;
-			// TODO: Actually calculate proper cross section...
-			// TODO: Introduce jitter
-			var cross = bb.extents.magnitude * 2;
-			return Length.FromUnits(cross);
 		}
 
 		private RocketContact CreateContact(RocketComponent rocket)

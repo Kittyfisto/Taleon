@@ -58,7 +58,7 @@ namespace Assets.Scripts.UI
 		{
 			DrawIcon(position, RadarBlipIcon);
 			var rect = new Rect(position.x + 20, position.y-16, 120, 60);
-			GUI.Label(rect, string.Format("Unknown contact\r\n{0}", contact.Distance));
+			GUI.Label(rect, string.Format("Unknown contact\r\n{0}\r\n\u0394{1}", contact.Distance, contact.DeltaV));
 		}
 
 		private Texture GetClassificationIcon(RocketContact rocket)

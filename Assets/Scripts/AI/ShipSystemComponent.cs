@@ -45,7 +45,7 @@ namespace Assets.Scripts.AI
 			_unit = GetComponent<UnitComponent>();
 		}
 
-		public void SetVelocity(Velocity velocity)
+		public void SetVelocity(VelocitySetting velocity)
 		{
 			var velocityMagnitude = Mathf.Abs((int)velocity * 10);
 			_navigation.SetVelocity(velocityMagnitude);

@@ -7,28 +7,79 @@ namespace Assets.Scripts.AI
 	{
 		private readonly Length _distance;
 		private readonly Length _crossSection;
+		private readonly Velocity _deltaV;
 		private readonly RocketComponent _rocket;
 		private readonly GameObject _gameObject;
 		private readonly ShipSystemComponent _ship;
 
-		public SensorBlip(RocketComponent rocket, Length distance, Length crossSection)
+		public static bool TryCreate(ShipSystemComponent shipSystem, GameObject possibleContact, out SensorBlip blip)
 		{
-			_rocket = rocket;
-			_gameObject = rocket.gameObject;
-			_distance = distance;
-			_crossSection = crossSection;
+			var ship = possibleContact.GetComponent<ShipSystemComponent>();
+			if (ship != null)
+			{
+				blip = new SensorBlip(shipSystem, ship);
+				return true;
+			}
 
-			_ship = null;
+			var rocket = possibleContact.GetComponent<RocketComponent>();
+			if (rocket != null)
+			{
+				blip = new SensorBlip(shipSystem, rocket);
+				return true;
+			}
+
+			blip = new SensorBlip();
+			return false;
 		}
 
-		public SensorBlip(ShipSystemComponent ship, Length distance, Length crossSection)
+		private static Length CalculateDistance(ShipSystemComponent ship, GameObject possibleContact)
 		{
-			_ship = ship;
-			_gameObject = ship.gameObject;
-			_distance = distance;
-			_crossSection = crossSection;
+			var otherTransform = possibleContact.transform;
+			var distance = Vector3.Distance(otherTransform.position, ship.transform.position);
+			// TODO: Introduce jitter
+			return Length.FromUnits(distance);
+		}
 
+		private static Length CalculateCrossSection(GameObject possibleContact)
+		{
+			var blipCollider = possibleContact.GetComponentInChildren<Collider>();
+			if (blipCollider == null)
+				return Length.Zero;
+
+			var bb = blipCollider.bounds;
+			// TODO: Actually calculate proper cross section...
+			// TODO: Introduce jitter
+			var cross = bb.extents.magnitude * 2;
+			return Length.FromUnits(cross);
+		}
+
+		private SensorBlip(ShipSystemComponent shipSystem, GameObject gameObject)
+		{
 			_rocket = null;
+			_ship = null;
+			_deltaV = Velocity.Zero;
+
+			_gameObject = gameObject;
+			_distance = CalculateDistance(shipSystem, gameObject);
+			_crossSection = CalculateCrossSection(gameObject);
+		}
+
+		private SensorBlip(ShipSystemComponent shipSystem, RocketComponent rocket)
+			: this(shipSystem, rocket.gameObject)
+		{
+			_rocket = rocket;
+		}
+
+		private SensorBlip(ShipSystemComponent ship, ShipSystemComponent contact)
+			: this(ship, contact.gameObject)
+		{
+			_ship = contact;
+			_deltaV = Velocity.Difference(ship.CurrentVelocity, contact.CurrentVelocity);
+		}
+
+		public Velocity DeltaV
+		{
+			get { return _deltaV; }
 		}
 
 		public Length Distance
