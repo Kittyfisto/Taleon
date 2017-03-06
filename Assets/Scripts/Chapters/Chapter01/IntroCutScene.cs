@@ -41,7 +41,8 @@ namespace Assets.Scripts.Chapters.Chapter01
 				new CameraCutAction(GameObject.Find("Position1"), 7.5f),
 				new CameraCutAction(GameObject.Find("Position2"), 13.5f),
 				new CameraCutAction(GameObject.Find("Position3"), 10),
-				new CameraCutAction(GameObject.Find("Position4"), 20)
+				new CameraCutAction(GameObject.Find("Position4"), 10),
+				new CameraCutAction(GameObject.Find("Position5"), 10)
 			};
 
 			var controller = Panel.GetComponent<CutSceneController>();
