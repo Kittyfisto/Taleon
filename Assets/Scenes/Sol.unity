@@ -785,7 +785,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4362986525308604, guid: 1d75317599c0dd04f9c9216368f5da16, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0.7173516
+      value: -0.71735156
       objectReference: {fileID: 0}
     - target: {fileID: 4362986525308604, guid: 1d75317599c0dd04f9c9216368f5da16, type: 2}
       propertyPath: m_LocalRotation.z
@@ -793,15 +793,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4362986525308604, guid: 1d75317599c0dd04f9c9216368f5da16, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.6967115
+      value: 0.6967114
       objectReference: {fileID: 0}
     - target: {fileID: 4362986525308604, guid: 1d75317599c0dd04f9c9216368f5da16, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4362986525308604, guid: 1d75317599c0dd04f9c9216368f5da16, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -91.672005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d75317599c0dd04f9c9216368f5da16, type: 2}
@@ -1230,22 +1226,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea96854a46ee3ac498cd1b632d34f3f9, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &857138061 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1075084442341498, guid: 1d75317599c0dd04f9c9216368f5da16,
-    type: 2}
-  m_PrefabInternal: {fileID: 513501363}
---- !u!114 &857138062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 857138061}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8416206f917f835469b9dcf4a4579a2e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &923615402
 Prefab:
   m_ObjectHideFlags: 0
@@ -1904,7 +1884,7 @@ Prefab:
     - target: {fileID: 224296256024180346, guid: d52ca31704ae0ff439ba20c319f4be35,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -437
       objectReference: {fileID: 0}
     - target: {fileID: 224296256024180346, guid: d52ca31704ae0ff439ba20c319f4be35,
         type: 2}

@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
   - enabled: 1
     path: Assets/Scenes/Chapters/Chapter 01 - Intro.unity
+  - enabled: 1
+    path: Assets/Scenes/Chapters/Chapter 03 - Contact.unity

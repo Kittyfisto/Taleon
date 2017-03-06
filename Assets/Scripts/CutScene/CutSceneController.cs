@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.CutScene
@@ -31,6 +32,7 @@ namespace Assets.Scripts.CutScene
 				_actions.Add(typeof(DialogAction), ShowDialog);
 				_actions.Add(typeof(PauseDialogAction), PauseDialog);
 				_actions.Add(typeof(CameraCutAction), MoveCamera);
+				_actions.Add(typeof(LoadSceneAction), LoadScene);
 
 				_textBox = textBox;
 				_camera = camera;
@@ -38,6 +40,13 @@ namespace Assets.Scripts.CutScene
 				_lines = actions.ToArray();
 				_currentLineIndex = -1;
 				_length = _lines.Sum(x => x.Length);
+			}
+
+			private void LoadScene(ICutSceneAction action)
+			{
+				var name = ((LoadSceneAction) action).SceneName;
+				Debug.LogFormat("Loading scene '{0}'...", name);
+				SceneManager.LoadScene(name, LoadSceneMode.Single);
 			}
 
 			private void MoveCamera(ICutSceneAction action)
@@ -123,6 +132,10 @@ namespace Assets.Scripts.CutScene
 				if (_actions.TryGetValue(type, out fn))
 				{
 					fn(currentAction);
+				}
+				else
+				{
+					Debug.LogWarningFormat("Unknown cut scene action: {0}", type);
 				}
 			}
 

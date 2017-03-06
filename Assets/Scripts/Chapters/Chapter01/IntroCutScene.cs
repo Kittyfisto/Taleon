@@ -34,7 +34,9 @@ namespace Assets.Scripts.Chapters.Chapter01
 				new DialogAction(2.5f, "Navigation Officer", "Yessir."),
 				new PauseDialogAction(10f),
 				new DialogAction(4f,   "Captain", "XO, Set course to intercept the <Sister Ship Name>. We will support her in patrolling LTO."),
-				new DialogAction(2f,   "XO", "Aye Aye, Cpt.")
+				new DialogAction(2f,   "XO", "Aye Aye, Cpt."),
+
+				new LoadSceneAction("Scenes/Chapters/Chapter 03 - Contact")
 			};
 			var cameraCuts = new[]
 			{
