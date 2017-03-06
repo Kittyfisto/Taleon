@@ -12,6 +12,7 @@ namespace Assets.Scripts.UI
 		public Texture FriendlyRocketIcon;
 		public Texture NeutralRocketIcon;
 		public Texture EnemyRocketIcon;
+		public Texture RadarBlipIcon;
 
 		// Use this for initialization
 		private void Start()
@@ -42,6 +43,22 @@ namespace Assets.Scripts.UI
 					DrawIcon(position, GetClassificationIcon(contact));
 				}
 			}
+
+			foreach (var contact in _radar.Blips)
+			{
+				Vector2 position;
+				if (IsVisible(camera, contact.Transform, out position))
+				{
+					DrawRadarBlip(contact, position);
+				}
+			}
+		}
+
+		private void DrawRadarBlip(SensorBlip contact, Vector2 position)
+		{
+			DrawIcon(position, RadarBlipIcon);
+			var rect = new Rect(position.x + 20, position.y-16, 120, 60);
+			GUI.Label(rect, string.Format("Unknown contact\r\n{0}", contact.Distance));
 		}
 
 		private Texture GetClassificationIcon(RocketContact rocket)
@@ -73,18 +90,28 @@ namespace Assets.Scripts.UI
 			var rect = new Rect(center, new Vector2(shipIcon.width, shipIcon.height));
 			GUI.DrawTexture(rect, shipIcon);
 		}
-		
+
 		private static bool IsVisible(Camera camera, MonoBehaviour target, out Vector2 position)
 		{
-			position = Vector2.zero;
+			if (target == null)
+			{
+				position = Vector2.zero;
+				return false;
+			}
 
+			return IsVisible(camera, target.transform, out position);
+		}
+
+		private static bool IsVisible(Camera camera, Transform target, out Vector2 position)
+		{
+			position = Vector2.zero;
 			if (target == null)
 				return false;
 
 			if (camera == null)
 				return false;
 
-			var targetPosition = target.transform.position;
+			var targetPosition = target.position;
 			var cameraPosition = camera.transform.position;
 			var heading = (targetPosition - cameraPosition).normalized;
 			var dot = Vector3.Dot(camera.transform.forward, heading);

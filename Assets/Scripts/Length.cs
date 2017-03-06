@@ -107,9 +107,9 @@ namespace Assets.Scripts
 		public override string ToString()
 		{
 			if (this >= OneKilometer)
-				return string.Format("{0:F1} km", Kilometers);
+				return string.Format("{0:F2} km", Kilometers);
 
-			return string.Format("{0:F1} m", Meters);
+			return string.Format("{0:F0} m", Meters);
 		}
 	}
 }

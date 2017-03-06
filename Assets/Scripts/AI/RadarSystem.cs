@@ -13,23 +13,41 @@ namespace Assets.Scripts.AI
 	public sealed class RadarSystem
 		: MonoBehaviour
 	{
+		private readonly List<SensorBlip> _blips;
 		private readonly List<RocketContact> _rocketContacts;
 		private readonly List<ShipSystemComponent> _ships;
+		private Faction _faction;
 
 		public float Radius;
-		private Faction _faction;
 
 		public RadarSystem()
 		{
+			_blips = new List<SensorBlip>();
 			_rocketContacts = new List<RocketContact>();
 			_ships = new List<ShipSystemComponent>();
 		}
 
+		/// <summary>
+		///     All sensor contacts that couldn't be properly resolved by this radar system.
+		///     If something is in this list then the system doesn't effectively know
+		///     what the object is, just that it's there.
+		/// </summary>
+		public IEnumerable<SensorBlip> Blips
+		{
+			get { return _blips; }
+		}
+
+		/// <summary>
+		///     The list of all known ships in the vincinity.
+		/// </summary>
 		public IEnumerable<ShipSystemComponent> Ships
 		{
 			get { return _ships; }
 		}
 
+		/// <summary>
+		///     The list of all known rockets in the vincinity.
+		/// </summary>
 		public IEnumerable<RocketContact> RocketContacts
 		{
 			get { return _rocketContacts; }
@@ -42,6 +60,7 @@ namespace Assets.Scripts.AI
 
 		private void Update()
 		{
+			_blips.Clear();
 			_rocketContacts.Clear();
 			_ships.Clear();
 
@@ -57,18 +76,64 @@ namespace Assets.Scripts.AI
 				if (ReferenceEquals(gameObject, possibleContact))
 					continue;
 
-				var rocket = possibleContact.GetComponent<RocketComponent>();
-				if (rocket != null)
+				SensorBlip blip;
+				if (TryCreateRadarBlip(possibleContact, out blip))
 				{
-					_rocketContacts.Add(CreateContact(rocket));
-				}
-				else
-				{
-					var ship = possibleContact.GetComponent<ShipSystemComponent>();
-					if (ship != null)
+					RocketComponent rocket;
+					ShipSystemComponent ship;
+					if (blip.TryResolve(out rocket))
+						_rocketContacts.Add(CreateContact(rocket));
+					else if (blip.TryResolve(out ship))
 						_ships.Add(ship);
+					else
+						_blips.Add(blip);
 				}
 			}
+		}
+
+		private bool TryCreateRadarBlip(GameObject possibleContact, out SensorBlip blip)
+		{
+			var ship = possibleContact.GetComponent<ShipSystemComponent>();
+			if (ship != null)
+			{
+				var distance = CalculateDistance(possibleContact);
+				var crossSection = CalculateCrossSection(possibleContact);
+				blip = new SensorBlip(ship, distance, crossSection);
+				return true;
+			}
+
+			var rocket = possibleContact.GetComponent<RocketComponent>();
+			if (rocket != null)
+			{
+				var distance = CalculateDistance(possibleContact);
+				var crossSection = CalculateCrossSection(possibleContact);
+				blip = new SensorBlip(rocket, distance, crossSection);
+				return true;
+			}
+
+			blip = new SensorBlip();
+			return false;
+		}
+
+		private Length CalculateDistance(GameObject possibleContact)
+		{
+			var otherTransform = possibleContact.transform;
+			var distance = Vector3.Distance(otherTransform.position, transform.position);
+			// TODO: Introduce jitter
+			return Length.FromUnits(distance);
+		}
+
+		private Length CalculateCrossSection(GameObject possibleContact)
+		{
+			var blipCollider = possibleContact.GetComponentInChildren<Collider>();
+			if (blipCollider == null)
+				return Length.Zero;
+
+			var bb = blipCollider.bounds;
+			// TODO: Actually calculate proper cross section...
+			// TODO: Introduce jitter
+			var cross = bb.extents.magnitude * 2;
+			return Length.FromUnits(cross);
 		}
 
 		private RocketContact CreateContact(RocketComponent rocket)
