@@ -9,6 +9,7 @@ namespace Assets.Scripts.UI
 		private RadarSystem _radar;
 
 		public Texture ShipIcon;
+		public Texture EnemyShipIcon;
 		public Texture FriendlyRocketIcon;
 		public Texture NeutralRocketIcon;
 		public Texture EnemyRocketIcon;
@@ -31,7 +32,7 @@ namespace Assets.Scripts.UI
 				Vector2 position;
 				if (IsVisible(camera, ship, out position))
 				{
-					DrawIcon(position, ShipIcon);
+					DrawShip(ship, position);
 				}
 			}
 
@@ -54,11 +55,36 @@ namespace Assets.Scripts.UI
 			}
 		}
 
+		private void DrawShip(ShipSystemComponent ship, Vector2 position)
+		{
+			DrawIcon(position, GetClassificationIcon(ship));
+			var rect = new Rect(position.x + 20, position.y - 16, 120, 60);
+			GUI.Label(rect, string.Format("Enemy contact\r\n\"{0}\"", ship.name));
+		}
+
 		private void DrawRadarBlip(SensorBlip contact, Vector2 position)
 		{
 			DrawIcon(position, RadarBlipIcon);
 			var rect = new Rect(position.x + 20, position.y-16, 120, 60);
 			GUI.Label(rect, string.Format("Unknown contact\r\n{0}\r\n\u0394{1}", contact.Distance, contact.DeltaV));
+		}
+
+		private Texture GetClassificationIcon(ShipSystemComponent ship)
+		{
+			var faction = ship.GetComponent<FactionComponent>();
+			if (faction == null)
+				return null;
+
+			switch (faction.Faction)
+			{
+				case Faction.Player:
+					return ShipIcon;
+
+				case Faction.Pirates:
+					return EnemyShipIcon;
+			}
+
+			return null;
 		}
 
 		private Texture GetClassificationIcon(RocketContact rocket)

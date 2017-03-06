@@ -39,9 +39,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShipIcon: {fileID: 2800000, guid: 504bbdde0d3acfa4e93584cf73125726, type: 3}
+  EnemyShipIcon: {fileID: 2800000, guid: c8dbc15a3e04c1b42baa09761293d84c, type: 3}
   FriendlyRocketIcon: {fileID: 2800000, guid: 4ceac8f8a145b7942a054c311307e906, type: 3}
   NeutralRocketIcon: {fileID: 2800000, guid: e394b6b326deeb649a9f17dc617bcbfc, type: 3}
   EnemyRocketIcon: {fileID: 2800000, guid: 72069fdf22e64f341bc73206bfc713c3, type: 3}
+  RadarBlipIcon: {fileID: 2800000, guid: 9bc968d208412c442b5b4a6162279efc, type: 3}
 --- !u!224 &224292229536004312
 RectTransform:
   m_ObjectHideFlags: 1
