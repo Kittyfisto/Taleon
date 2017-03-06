@@ -14,6 +14,11 @@ namespace Assets.Scripts.CutScene
 			_length = length;
 		}
 
+		public Transform Transform
+		{
+			get { return _anchor != null ? _anchor.transform : null; }
+		}
+
 		public float Length
 		{
 			get { return _length; }

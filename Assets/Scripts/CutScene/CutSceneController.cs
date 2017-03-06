@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.UI;
 using UnityEngine;
@@ -15,20 +16,66 @@ namespace Assets.Scripts.CutScene
 		/// </summary>
 		private sealed class CutSceneActionList
 		{
+			private readonly Dictionary<Type, Action<ICutSceneAction>> _actions;
 			private readonly ICutSceneAction[] _lines;
-			private int _currentLineIndex;
-			private float _currentLineElapsed;
 			private readonly float _length;
 			private readonly Text _textBox;
+			private readonly Camera _camera;
 
-			public CutSceneActionList(Text textBox, IEnumerable<ICutSceneAction> actions)
+			private int _currentLineIndex;
+			private float _currentLineElapsed;
+
+			public CutSceneActionList(Text textBox, Camera camera, IEnumerable<ICutSceneAction> actions)
 			{
+				_actions = new Dictionary<Type, Action<ICutSceneAction>>();
+				_actions.Add(typeof(DialogAction), ShowDialog);
+				_actions.Add(typeof(PauseDialogAction), PauseDialog);
+				_actions.Add(typeof(CameraCutAction), MoveCamera);
+
 				_textBox = textBox;
+				_camera = camera;
+
 				_lines = actions.ToArray();
 				_currentLineIndex = -1;
 				_length = _lines.Sum(x => x.Length);
+			}
 
-				ExecuteNextAction();
+			private void MoveCamera(ICutSceneAction action)
+			{
+				var cut = (CameraCutAction) action;
+				var transform = cut.Transform;
+
+				if (transform != null && _camera != null)
+				{
+					var cameraTransform = _camera.transform;
+
+					cameraTransform.position = transform.position;
+					cameraTransform.rotation = transform.rotation;
+
+					Debug.LogFormat("Camera position/rotation changed to {0}/{1}",
+						transform.position,
+						transform.rotation);
+				}
+				else
+				{
+					Debug.LogWarning("No transform given - camera will not change position/rotation");
+				}
+			}
+
+			private void PauseDialog(ICutSceneAction action)
+			{
+				if (_textBox == null)
+					return;
+
+				_textBox.text = null;
+			}
+
+			private void ShowDialog(ICutSceneAction action)
+			{
+				if (_textBox == null)
+					return;
+
+				_textBox.text = ((DialogAction)action).ToString();
 			}
 
 			public float Length
@@ -57,7 +104,7 @@ namespace Assets.Scripts.CutScene
 				}
 			}
 
-			private void ExecuteNextAction()
+			internal void ExecuteNextAction()
 			{
 				++_currentLineIndex;
 				_currentLineElapsed = 0;
@@ -71,11 +118,12 @@ namespace Assets.Scripts.CutScene
 
 			private void Execute(ICutSceneAction currentAction)
 			{
-				var dialog = currentAction as DialogAction;
-				if (dialog != null)
-					_textBox.text = dialog.ToString();
-				else
-					_textBox.text = null;
+				var type = currentAction.GetType();
+				Action<ICutSceneAction> fn;
+				if (_actions.TryGetValue(type, out fn))
+				{
+					fn(currentAction);
+				}
 			}
 
 			public bool IsFinished
@@ -106,6 +154,8 @@ namespace Assets.Scripts.CutScene
 		/// </summary>
 		public Text TextBox;
 
+		public Camera Camera;
+
 		private QuitGameComponent _quitDialog;
 
 		public void Play(params IEnumerable<ICutSceneAction>[] actions)
@@ -113,18 +163,28 @@ namespace Assets.Scripts.CutScene
 			gameObject.SetActive(true);
 
 			_quitDialog = FindObjectOfType<QuitGameComponent>();
-
 			_actionLists = new CutSceneActionList[actions.Length];
+
+			if (TextBox == null)
+				Debug.LogWarning("No TextBox assigned - subtitles will not be displayed");
+			if (Camera == null)
+				Debug.LogWarning("No Camera assigned - camera will not change position during cutscene");
+
 			var length = 0f;
 			int count = 0;
 			for (int i = 0; i < actions.Length; ++i)
 			{
-				_actionLists[i] = new CutSceneActionList(TextBox, actions[i]);
+				_actionLists[i] = new CutSceneActionList(TextBox, Camera, actions[i]);
 				length = Mathf.Max(length, _actionLists[i].Length);
 				count += _actionLists[i].Count;
 			}
 
 			Debug.LogFormat("Starting cut scene {0}seconds, {1} actions", length, count);
+
+			foreach (var action in _actionLists)
+			{
+				action.ExecuteNextAction();
+			}
 		}
 
 		private void Update()
