@@ -4,7 +4,7 @@ namespace Assets.Scripts.UI.MainMenu
 {
 	using UnityEngine.UI;
 
-	public class AudioVolume: MonoBehaviour
+	public class MusicVolume : MonoBehaviour
 	{
 		public Slider VolumeSlider;
 
