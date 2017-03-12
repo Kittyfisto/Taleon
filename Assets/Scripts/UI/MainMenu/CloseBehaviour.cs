@@ -6,15 +6,24 @@ namespace Assets.Scripts.UI.MainMenu
 	{
 		public void OnCloseButton()
 		{
-			Application.Quit();
+			QuitApplication();
 		}
 
 		void Update()
 		{
 			if (Input.GetKey(KeyCode.Escape))
 			{
-				Application.Quit();
+				QuitApplication();
 			}
+		}
+
+		private void QuitApplication()
+		{
+			#if UNITY_EDITOR
+			UnityEditor.EditorApplication.isPlaying = false;
+#else
+			Application.Quit();
+#endif
 		}
 	}
 }

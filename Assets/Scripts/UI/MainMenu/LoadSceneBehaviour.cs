@@ -5,9 +5,10 @@ namespace Assets.Scripts.UI.MainMenu
 {
 	public class LoadSceneBehaviour : MonoBehaviour
 	{
-		public void OnCloseButton()
+		public void OnStartGameButton()
 		{
 			SceneManager.LoadScene("Scenes/Chapters/Chapter 01 - Intro", LoadSceneMode.Single);
 		}
+
 	}
 }
