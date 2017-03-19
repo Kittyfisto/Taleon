@@ -2,8 +2,13 @@
 
 namespace Assets.Scripts.UI.MainMenu
 {
+	using UnityEngine.Audio;
+	using UnityEngine.UI;
+
 	public class CloseBehaviour : MonoBehaviour
 	{
+		public AudioMixer MainMixer;
+
 		public void OnCloseButton()
 		{
 			QuitApplication();
@@ -19,7 +24,16 @@ namespace Assets.Scripts.UI.MainMenu
 
 		private void QuitApplication()
 		{
-			#if UNITY_EDITOR
+			float value;
+			MainMixer.GetFloat("masterVol", out value);
+			PlayerPrefs.SetFloat("masterVol", value);
+
+			MainMixer.GetFloat("musicVol", out value);
+			PlayerPrefs.SetFloat("musicVol", value);
+
+			MainMixer.GetFloat("sfxVol", out value);
+			PlayerPrefs.SetFloat("sfxVol", value);
+#if UNITY_EDITOR
 			UnityEditor.EditorApplication.isPlaying = false;
 #else
 			Application.Quit();

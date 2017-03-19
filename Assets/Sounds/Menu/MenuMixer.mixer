@@ -9,8 +9,8 @@ AudioMixerController:
   m_OutputGroup: {fileID: 0}
   m_MasterGroup: {fileID: 24300001}
   m_Snapshots:
-  - {fileID: 24500003}
   - {fileID: 24597004}
+  - {fileID: 24500003}
   m_StartSnapshot: {fileID: 24597004}
   m_SuspendThreshold: -80
   m_EnableSuspend: 1

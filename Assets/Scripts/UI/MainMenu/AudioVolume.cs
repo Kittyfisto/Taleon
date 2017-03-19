@@ -16,21 +16,44 @@ namespace Assets.Scripts.UI.MainMenu
 
 		public void SetMusicLevel()
 		{
-			//mainMixer.SetFloat("musicVol", musicLevel);
 			mainMixer.SetFloat("musicVol", MusicVolumeSlider.value);
 		}
 
 		public void SetSfxLevel()
 		{
-			//mainMixer.SetFloat("sfxVol", sfxLevel);
 			mainMixer.SetFloat("sfxVol", SfxVolumeSlider.value);
 		}
 
 		public void SetMasterLevel()
 		{
-
-			// mainMixer.SetFloat("masterVol", masterLevel);
 			mainMixer.SetFloat("masterVol", MasterVolumeSlider.value);
+		}
+
+		[HideInInspector]
+		public float MasterVolume
+		{
+			get
+			{
+				return MasterVolumeSlider.value;
+			}
+		}
+
+		[HideInInspector]
+		public float MusicVolume
+		{
+			get
+			{
+				return MusicVolumeSlider.value;
+			}
+		}
+
+		[HideInInspector]
+		public float SfxVolume
+		{
+			get
+			{
+				return SfxVolumeSlider.value;
+			}
 		}
 	}
 }
