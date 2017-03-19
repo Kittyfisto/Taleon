@@ -2,15 +2,35 @@
 
 namespace Assets.Scripts.UI.MainMenu
 {
+	using UnityEngine.Audio;
 	using UnityEngine.UI;
 
 	public class AudioVolume: MonoBehaviour
 	{
-		public Slider VolumeSlider;
+		public Slider MasterVolumeSlider;
+		public Slider MusicVolumeSlider;
+		public Slider SfxVolumeSlider;
 
-		void Update()
+		public AudioMixer mainMixer;
+
+
+		public void SetMusicLevel()
 		{
-			AudioListener.volume = VolumeSlider.value;
+			//mainMixer.SetFloat("musicVol", musicLevel);
+			mainMixer.SetFloat("musicVol", MusicVolumeSlider.value);
+		}
+
+		public void SetSfxLevel()
+		{
+			//mainMixer.SetFloat("sfxVol", sfxLevel);
+			mainMixer.SetFloat("sfxVol", SfxVolumeSlider.value);
+		}
+
+		public void SetMasterLevel()
+		{
+
+			// mainMixer.SetFloat("masterVol", masterLevel);
+			mainMixer.SetFloat("masterVol", MasterVolumeSlider.value);
 		}
 	}
 }

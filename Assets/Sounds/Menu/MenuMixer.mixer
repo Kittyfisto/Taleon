@@ -14,7 +14,14 @@ AudioMixerController:
   m_StartSnapshot: {fileID: 24597004}
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
-  m_ExposedParameters: []
+  m_UpdateMode: 0
+  m_ExposedParameters:
+  - guid: af47711fee895d84aa5b8a3751b61642
+    name: masterVol
+  - guid: 0603a5ab81e588244836185d436e47e6
+    name: musicVol
+  - guid: 6e58e3523a72d9b48900293f2e49e8d0
+    name: sfxVol
   m_AudioMixerGroupViews:
   - guids:
     - e23538940ec23dd469b63071e8c39c5a
@@ -74,7 +81,6 @@ AudioMixerGroupController:
   m_Effects:
   - {fileID: 24494484}
   - {fileID: 24405648}
-  - {fileID: 24435068}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
@@ -129,47 +135,6 @@ AudioMixerEffectController:
     m_GUID: 0bd410267de68df44b49dbb995aaab49
   - m_ParameterName: Sidechain Mix
     m_GUID: 3bd3e53cb8a49864c941ecfdd9e6a370
-  m_SendTarget: {fileID: 0}
-  m_EnableWetMix: 0
-  m_Bypass: 0
---- !u!244 &24435068
-AudioMixerEffectController:
-  m_ObjectHideFlags: 3
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_EffectID: 970e45411830e2a448d77add9dbc8899
-  m_EffectName: SFX Reverb
-  m_MixLevel: 7fa8e31060c1db84b9550b60c19c1269
-  m_Parameters:
-  - m_ParameterName: Dry Level
-    m_GUID: 545d7b3acc328d34fbd5e1f113df15a4
-  - m_ParameterName: Room
-    m_GUID: 1f0f2f22300d9774cba77af6cbf3e03b
-  - m_ParameterName: Room HF
-    m_GUID: 60b918d6c2bb73c4fa477cb3bffc3428
-  - m_ParameterName: Decay Time
-    m_GUID: bc28dd3035be6d446867be55b82e73c5
-  - m_ParameterName: Decay HF Ratio
-    m_GUID: 66413f3c95264b04a9bd71750d5bb341
-  - m_ParameterName: Reflections
-    m_GUID: ebd75d3a59af7ff489aec56b1a2669d8
-  - m_ParameterName: Reflect Delay
-    m_GUID: 0651425d31797d64ab713439172c5aa6
-  - m_ParameterName: Reverb
-    m_GUID: 65642ae152de3c546a2068231743383c
-  - m_ParameterName: Reverb Delay
-    m_GUID: d7e482814787ee0428b6c740f2f330b2
-  - m_ParameterName: Diffusion
-    m_GUID: 84b011ab77f2fac43bf0e533b14e4595
-  - m_ParameterName: Density
-    m_GUID: 31f3f0b8885e1e7438628a0955191ba2
-  - m_ParameterName: HF Reference
-    m_GUID: adef060dda457024a8e09e93da1bf83a
-  - m_ParameterName: Room LF
-    m_GUID: 077560af3d2c4da4db30a2f5dd805031
-  - m_ParameterName: LF Reference
-    m_GUID: 7f221b684e40f8a4cbd42db7925d9a91
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
@@ -230,11 +195,11 @@ AudioMixerSnapshotController:
     d7e482814787ee0428b6c740f2f330b2: 0.0622
     65642ae152de3c546a2068231743383c: 2000
     1f0f2f22300d9774cba77af6cbf3e03b: -2470
-    6e58e3523a72d9b48900293f2e49e8d0: -0.16685188
+    6e58e3523a72d9b48900293f2e49e8d0: 0.3945702
     2b516c135a17c9444aa751d70ae9ec14: 0
     545d7b3acc328d34fbd5e1f113df15a4: 0
     ebd75d3a59af7ff489aec56b1a2669d8: -6639
-    0603a5ab81e588244836185d436e47e6: -10.345207
+    0603a5ab81e588244836185d436e47e6: -20.09816
     0651425d31797d64ab713439172c5aa6: 0.22
-    af47711fee895d84aa5b8a3751b61642: -80
+    af47711fee895d84aa5b8a3751b61642: 0.29450864
   m_TransitionOverrides: {}
