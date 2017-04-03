@@ -26,6 +26,11 @@ namespace Assets.Scripts.AI.FCS
 		/// </summary>
 		public GameObject Target;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public float Range;
+
 		#endregion
 
 		public float TimeToNextShot
@@ -44,9 +49,22 @@ namespace Assets.Scripts.AI.FCS
 			get { return 60 / RoundsPerMinute; }
 		}
 
-		protected bool CanShoot
+		protected virtual bool CanShoot
 		{
-			get { return TimeToNextShot <= 0; }
+			get
+			{
+				if (Target == null)
+					return false;
+
+				var distance = Vector3.Distance(Target.transform.position, transform.position);
+				if (distance > Range)
+					return false;
+
+				if (TimeToNextShot > 0)
+					return false;
+
+				return true;
+			}
 		}
 
 		protected virtual void Update()

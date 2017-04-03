@@ -437,6 +437,7 @@ MonoBehaviour:
     type: 2}
   RoundsPerMinute: 60
   Target: {fileID: 0}
+  Range: 1000
   Distance: 0
 --- !u!114 &114735526306133384
 MonoBehaviour:

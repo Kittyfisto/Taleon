@@ -55,3 +55,4 @@ MonoBehaviour:
     type: 2}
   RoundsPerMinute: 30
   Target: {fileID: 0}
+  Range: 1000
